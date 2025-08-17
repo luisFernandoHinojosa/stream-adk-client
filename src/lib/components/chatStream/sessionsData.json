@@ -1,0 +1,602 @@
+{
+  "id": "77a3ee9b-2371-4339-a842-b0c4eedcdea4",
+  "appName": "orquestrator_agent",
+  "userId": "user",
+  "state": {
+    "quotation_data": {
+      "estado": "exitoso",
+      "se_cotizo": true,
+      "complete_output": "Aquí tienes la cotización para tu familia de 6 personas:\n\n1. Hombre de 29 años: Vitalia Mas Salud - Precio mensual: $56\n2. Hijo de 10 meses: Vitalia Mas Salud - Precio mensual: $74\n3. Esposa de 23 años: Vitalia Mas Salud - Precio mensual: $57\n4. Padre de 60 años: Vitalia Mas Active - Precio mensual: $66\n5. Madre de 43 años: Vitalia Mas Active - Precio mensual: $66\n6. Hermana de 18 años: Vitalia Mas Salud - Precio mensual: $53\n\nCosto Total Mensual: $372\n\n### Resumen de Planes Cotizados:\n- **Vitalia Mas Salud (0 a 49 años)**\n  - Límite anual de gastos: 10,000 USD\n  - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs\n  - Descuentos en internación: 80%\n  - Descuentos en medicamentos en hospitalización: 70%\n  - Descuentos en emergencias: 70%\n  - Descuentos en servicios ambulatorios y diagnósticos: 70%\n  - Descuentos en farmacias (Farmacorp): 60%\n  - Servicio personalizable de odontología y asistencia médica al viajero.\n\n- **Vitalia Mas Active (mayores de 49 años)**\n  - Límite anual de gastos: 10,000 USD\n  - Consultas ilimitadas y sin copago con médico personal.\n  - Copagos para especialidades: 50 a 70 Bs\n  - Descuentos en internación: 50%\n  - Descuentos en medicamentos en hospitalización: 50%\n  - Descuentos en emergencias: 50%\n  - Descuentos en servicios ambulatorios y diagnósticos: 80%\n  - Descuentos en farmacias (Farmacorp): 20%",
+      "cobertura_planes": [
+        "Vitalia Mas Salud: Límite anual de gastos: 10,000 USD; Consultas médicas ilimitadas desde el primer día; Copagos entre 50 y 70 Bs; Descuentos en internación: 80%; Descuentos en medicamentos en hospitalización: 70%; Descuentos en emergencias: 70%; Descuentos en servicios ambulatorios y diagnósticos: 70%; Descuentos en farmacias (Farmacorp): 60%; Servicio personalizable de odontología y asistencia médica al viajero.",
+        "Vitalia Mas Active: Límite anual de gastos: 10,000 USD; Consultas ilimitadas y sin copago con médico personal; Copagos para especialidades: 50 a 70 Bs; Descuentos en internación: 50%; Descuentos en medicamentos en hospitalización: 50%; Descuentos en emergencias: 50%; Descuentos en servicios ambulatorios y diagnósticos: 80%; Descuentos en farmacias (Farmacorp): 20%"
+      ],
+      "cotizaciones_personas": [
+        {
+          "edad": 29,
+          "alias": "hombre 29 años",
+          "genero": "M",
+          "nombre_plan": "Vitalia Mas Salud",
+          "precio_mensual": 56
+        },
+        {
+          "edad": 0,
+          "alias": "hijo 10 meses",
+          "genero": "M",
+          "nombre_plan": "Vitalia Mas Salud",
+          "precio_mensual": 74
+        },
+        {
+          "edad": 23,
+          "alias": "esposa 23 años",
+          "genero": "F",
+          "nombre_plan": "Vitalia Mas Salud",
+          "precio_mensual": 57
+        },
+        {
+          "edad": 60,
+          "alias": "padre 60 años",
+          "genero": "M",
+          "nombre_plan": "Vitalia Mas Active",
+          "precio_mensual": 66
+        },
+        {
+          "edad": 43,
+          "alias": "madre 43 años",
+          "genero": "F",
+          "nombre_plan": "Vitalia Mas Active",
+          "precio_mensual": 66
+        },
+        {
+          "edad": 18,
+          "alias": "hermana 18 años",
+          "genero": "F",
+          "nombre_plan": "Vitalia Mas Salud",
+          "precio_mensual": 53
+        }
+      ]
+    },
+    "quotation_agent_result": "Aquí tienes la cotización para tu familia de 6 personas:\n\n1. Hombre de 29 años: **Vitalia Mas Salud** - Precio mensual: **$56**\n2. Hijo de 10 meses: **Vitalia Mas Salud** - Precio mensual: **$74**\n3. Esposa de 23 años: **Vitalia Mas Salud** - Precio mensual: **$57**\n4. Padre de 60 años: **Vitalia Mas Active** - Precio mensual: **$66**\n5. Madre de 43 años: **Vitalia Mas Active** - Precio mensual: **$66**\n6. Hermana de 18 años: **Vitalia Mas Salud** - Precio mensual: **$53**\n\n**Costo Total Mensual: $56 + $74 + $57 + $66 + $66 + $53 = $372**\n\n### Resumen de Planes Cotizados:\n- **Vitalia Mas Salud (0 a 49 años)**\n  - Límite anual de gastos: **10,000 USD**\n  - Consultas médicas ilimitadas desde el primer día, copagos entre **50 y 70 Bs**\n  - Descuentos en internación: **80%**\n  - Descuentos en medicamentos en hospitalización: **70%**\n  - Descuentos en emergencias: **70%**\n  - Descuentos en servicios ambulatorios y diagnósticos: **70%**\n  - Descuentos en farmacias (Farmacorp): **60%**\n  - Servicio personalizable de odontología y asistencia médica al viajero.\n\n- **Vitalia Mas Active (mayores de 49 años)**\n  - Límite anual de gastos: **10,000 USD**\n  - Consultas ilimitadas y sin copago con médico personal.\n  - Copagos para especialidades: **50 a 70 Bs**\n  - Descuentos en internación: **50%**\n  - Descuentos en medicamentos en hospitalización: **50%**\n  - Descuentos en emergencias: **50%**\n  - Descuentos en servicios ambulatorios y diagnósticos: **80%**\n  - Descuentos en farmacias (Farmacorp): **20%**\n\nSi necesitas más información o realizar algún ajuste, no dudes en decírmelo."
+  },
+  "events": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "hola"
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-f7ff205b-a2e8-4093-8dde-337696996dba",
+      "author": "user",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "c3d8029a-128e-4789-bdb3-8942042cb7f9",
+      "timestamp": 1752508721.955702
+    },
+    {
+      "invocationId": "e-f7ff205b-a2e8-4093-8dde-337696996dba",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {
+          "quotation_data": {
+            "data": "User has not requested a quotation yet."
+          }
+        },
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "58bb1e8d-4b4b-4b31-8672-a6cbd0cc4635",
+      "timestamp": 1752508721.975748
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "¡Bienvenido/a a Vitalia + Salud! ¿En qué podemos ayudarle hoy?"
+          }
+        ],
+        "role": "model"
+      },
+      "partial": false,
+      "invocationId": "e-f7ff205b-a2e8-4093-8dde-337696996dba",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "aefcbb56-e9c6-48fb-b14d-6ce21f6794b3",
+      "timestamp": 1752508721.997928
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "quiero realizar una cotizacion para mi familia"
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-217e0534-113d-4ff7-b660-29938aeade9e",
+      "author": "user",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "e35b949f-d28e-4394-b285-0f923d78b4be",
+      "timestamp": 1752508727.983882
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "Con mucho gusto le orientamos. Para poder proporcionarle una cotización personalizada, necesitaré algunos datos sobre su familia. ¿Podría indicarme cuántas personas incluirá en la cotización y sus edades?"
+          }
+        ],
+        "role": "model"
+      },
+      "partial": false,
+      "invocationId": "e-217e0534-113d-4ff7-b660-29938aeade9e",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "4def3490-9dbf-45f9-83b8-d663e810df3f",
+      "timestamp": 1752508728.003372
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "por favor somos 4 personas yo varon de 29  mi hijo de 10 meses mi esposa de 23 mi padre de 60"
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-e8995cd7-16e4-40c1-a43a-cafc76b5a2b7",
+      "author": "user",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "394667b1-6c91-46ab-8740-3165a8440112",
+      "timestamp": 1752508758.831721
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "id": "call_z2rYq6rdM2oFbMqDEdHkKWex",
+              "args": {
+                "request": "Cotización para una familia de 4 personas: hombre de 29 años, hijo de 10 meses, esposa de 23 años y padre de 60 años."
+              },
+              "name": "quotation_agent"
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "partial": false,
+      "invocationId": "e-e8995cd7-16e4-40c1-a43a-cafc76b5a2b7",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "9f14cbe7-30d3-42f7-8343-17a9a02c3785",
+      "timestamp": 1752508758.853792
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "functionResponse": {
+              "id": "call_z2rYq6rdM2oFbMqDEdHkKWex",
+              "name": "quotation_agent",
+              "response": {
+                "result": "{\"complete_output\":\"Aquí tienes la cotización para tu familia de 4 personas: \\n\\n1. Hombre de 29 años: **Vitalia Mas Salud** - $56  \\n2. Hijo de 10 meses: **Vitalia Mas Salud** - $74  \\n3. Esposa de 23 años: **Vitalia Mas Salud** - $57  \\n4. Padre de 60 años: **Vitalia Mas Active** - $66  \\n\\n### Resumen de precios mensuales:\\n- **Vitalia Mas Salud (29 años)**: $56\\n- **Vitalia Mas Salud (10 meses)**: $74\\n- **Vitalia Mas Salud (23 años)**: $57\\n- **Vitalia Mas Active (60 años)**: $66\\n\\n### Total mensual: \\n- **$56 + $74 + $57 + $66 = $253**\\n\\n### Beneficios incluidos en cada plan: \\n- **Vitalia Mas Salud**:\\n  - Límite anual de gastos: 10,000 USD.\\n  - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs.\\n  - Descuentos en internación: 80%.\\n  - Descuentos en medicamentos en hospitalización: 70%.\\n  - Descuentos en emergencias: 70%.\\n  - Descuentos en servicios ambulatorios y diagnósticos: 70%.\\n  - Descuentos en farmacias (Farmacorp): 60%.\\n  - Servicio personalizable de odontología y asistencia médica al viajero.\\n\\n- **Vitalia Mas Active**:\\n  - Límite anual de gastos: 10,000 USD.\\n  - Consultas ilimitadas y sin copago con médico personal.\\n  - Copagos para especialidades: 50 a 70 Bs.\\n  - Descuentos en internación: 50%.\\n  - Descuentos en medicamentos en hospitalización: 50%.\\n  - Descuentos en emergencias: 50%.\\n  - Descuentos en servicios ambulatorios y diagnósticos: 80%.\\n  - Descuentos en farmacias (Farmacorp): 20%.  \\n\\nSi tienes más preguntas o necesitas más información, ¡no dudes en preguntar!\",\"estado\":\"exitoso\",\"se_cotizo\":true,\"cotizaciones_personas\":[{\"alias\":\"Hombre de 29 años\",\"edad\":29,\"genero\":\"M\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":56},{\"alias\":\"Hijo de 10 meses\",\"edad\":0,\"genero\":\"M\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":74},{\"alias\":\"Esposa de 23 años\",\"edad\":23,\"genero\":\"F\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":57},{\"alias\":\"Padre de 60 años\",\"edad\":60,\"genero\":\"M\",\"nombre_plan\":\"Vitalia Mas Active\",\"precio_mensual\":66}],\"cobertura_planes\":[\"Vitalia Mas Salud: Límite anual de gastos: 10,000 USD. Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs. Descuentos en internación: 80%. Descuentos en medicamentos en hospitalización: 70%. Descuentos en emergencias: 70%. Descuentos en servicios ambulatorios y diagnósticos: 70%. Descuentos en farmacias (Farmacorp): 60%. Servicio personalizable de odontología y asistencia médica al viajero.\",\"Vitalia Mas Active: Límite anual de gastos: 10,000 USD. Consultas ilimitadas y sin copago con médico personal. Copagos para especialidades: 50 a 70 Bs. Descuentos en internación: 50%. Descuentos en medicamentos en hospitalización: 50%. Descuentos en emergencias: 50%. Descuentos en servicios ambulatorios y diagnósticos: 80%. Descuentos en farmacias (Farmacorp): 20%.\"]}"
+              }
+            }
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-e8995cd7-16e4-40c1-a43a-cafc76b5a2b7",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {
+          "quotation_agent_result": "Aquí tienes la cotización para tu familia de 4 personas:\n\n1. Hombre de 29 años: **Vitalia Mas Salud** - $56  \n2. Hijo de 10 meses: **Vitalia Mas Salud** - $74  \n3. Esposa de 23 años: **Vitalia Mas Salud** - $57  \n4. Padre de 60 años: **Vitalia Mas Active** - $66  \n\n### Resumen de precios mensuales:\n- **Vitalia Mas Salud (29 años)**: $56\n- **Vitalia Mas Salud (10 meses)**: $74\n- **Vitalia Mas Salud (23 años)**: $57\n- **Vitalia Mas Active (60 años)**: $66\n\n### Total mensual: \n- **$56 + $74 + $57 + $66 = $253**\n\n### Beneficios incluidos en cada plan:\n- **Vitalia Mas Salud**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs.\n  - Descuentos en internación: 80%.\n  - Descuentos en medicamentos en hospitalización: 70%.\n  - Descuentos en emergencias: 70%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 70%.\n  - Descuentos en farmacias (Farmacorp): 60%.\n  - Servicio personalizable de odontología y asistencia médica al viajero.\n\n- **Vitalia Mas Active**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas ilimitadas y sin copago con médico personal.\n  - Copagos para especialidades: 50 a 70 Bs.\n  - Descuentos en internación: 50%.\n  - Descuentos en medicamentos en hospitalización: 50%.\n  - Descuentos en emergencias: 50%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 80%.\n  - Descuentos en farmacias (Farmacorp): 20%.\n\nSi tienes más preguntas o necesitas más información, ¡no dudes en preguntar!",
+          "quotation_data": {
+            "complete_output": "Aquí tienes la cotización para tu familia de 4 personas: \n\n1. Hombre de 29 años: **Vitalia Mas Salud** - $56  \n2. Hijo de 10 meses: **Vitalia Mas Salud** - $74  \n3. Esposa de 23 años: **Vitalia Mas Salud** - $57  \n4. Padre de 60 años: **Vitalia Mas Active** - $66  \n\n### Resumen de precios mensuales:\n- **Vitalia Mas Salud (29 años)**: $56\n- **Vitalia Mas Salud (10 meses)**: $74\n- **Vitalia Mas Salud (23 años)**: $57\n- **Vitalia Mas Active (60 años)**: $66\n\n### Total mensual: \n- **$56 + $74 + $57 + $66 = $253**\n\n### Beneficios incluidos en cada plan: \n- **Vitalia Mas Salud**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs.\n  - Descuentos en internación: 80%.\n  - Descuentos en medicamentos en hospitalización: 70%.\n  - Descuentos en emergencias: 70%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 70%.\n  - Descuentos en farmacias (Farmacorp): 60%.\n  - Servicio personalizable de odontología y asistencia médica al viajero.\n\n- **Vitalia Mas Active**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas ilimitadas y sin copago con médico personal.\n  - Copagos para especialidades: 50 a 70 Bs.\n  - Descuentos en internación: 50%.\n  - Descuentos en medicamentos en hospitalización: 50%.\n  - Descuentos en emergencias: 50%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 80%.\n  - Descuentos en farmacias (Farmacorp): 20%.  \n\nSi tienes más preguntas o necesitas más información, ¡no dudes en preguntar!",
+            "estado": "exitoso",
+            "se_cotizo": true,
+            "cotizaciones_personas": [
+              {
+                "alias": "Hombre de 29 años",
+                "edad": 29,
+                "genero": "M",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 56
+              },
+              {
+                "alias": "Hijo de 10 meses",
+                "edad": 0,
+                "genero": "M",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 74
+              },
+              {
+                "alias": "Esposa de 23 años",
+                "edad": 23,
+                "genero": "F",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 57
+              },
+              {
+                "alias": "Padre de 60 años",
+                "edad": 60,
+                "genero": "M",
+                "nombre_plan": "Vitalia Mas Active",
+                "precio_mensual": 66
+              }
+            ],
+            "cobertura_planes": [
+              "Vitalia Mas Salud: Límite anual de gastos: 10,000 USD. Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs. Descuentos en internación: 80%. Descuentos en medicamentos en hospitalización: 70%. Descuentos en emergencias: 70%. Descuentos en servicios ambulatorios y diagnósticos: 70%. Descuentos en farmacias (Farmacorp): 60%. Servicio personalizable de odontología y asistencia médica al viajero.",
+              "Vitalia Mas Active: Límite anual de gastos: 10,000 USD. Consultas ilimitadas y sin copago con médico personal. Copagos para especialidades: 50 a 70 Bs. Descuentos en internación: 50%. Descuentos en medicamentos en hospitalización: 50%. Descuentos en emergencias: 50%. Descuentos en servicios ambulatorios y diagnósticos: 80%. Descuentos en farmacias (Farmacorp): 20%."
+            ]
+          }
+        },
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "f00ad41c-ffb2-4d13-8924-9148d95fd954",
+      "timestamp": 1752508784.381338
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "Aquí tienes la cotización para tu familia de 4 personas:\n\n1. Hombre de 29 años: **Vitalia Mas Salud** - $56  \n2. Hijo de 10 meses: **Vitalia Mas Salud** - $74  \n3. Esposa de 23 años: **Vitalia Mas Salud** - $57  \n4. Padre de 60 años: **Vitalia Mas Active** - $66  \n\n### Resumen de precios mensuales:\n- **Vitalia Mas Salud (29 años)**: $56\n- **Vitalia Mas Salud (10 meses)**: $74\n- **Vitalia Mas Salud (23 años)**: $57\n- **Vitalia Mas Active (60 años)**: $66\n\n### Total mensual: \n- **$56 + $74 + $57 + $66 = $253**\n\n### Beneficios incluidos en cada plan: \n- **Vitalia Mas Salud**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs.\n  - Descuentos en internación: 80%.\n  - Descuentos en medicamentos en hospitalización: 70%.\n  - Descuentos en emergencias: 70%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 70%.\n  - Descuentos en farmacias (Farmacorp): 60%.\n  - Servicio personalizable de odontología y asistencia médica al viajero.\n\n- **Vitalia Mas Active**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas ilimitadas y sin copago con médico personal.\n  - Copagos para especialidades: 50 a 70 Bs.\n  - Descuentos en internación: 50%.\n  - Descuentos en medicamentos en hospitalización: 50%.\n  - Descuentos en emergencias: 50%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 80%.\n  - Descuentos en farmacias (Farmacorp): 20%.  \n\nSi tienes más preguntas o necesitas más información, ¡no dudes en preguntar!"
+          }
+        ],
+        "role": "model"
+      },
+      "partial": false,
+      "invocationId": "e-e8995cd7-16e4-40c1-a43a-cafc76b5a2b7",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "f66c931b-0d60-41cb-ab62-00c0cfc370a2",
+      "timestamp": 1752508784.419496
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "quiero realizar otra cotizacion esta vez incluir a mi madre que tiene 43 anhos porfavor"
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-4f5c65f1-0a62-4e2f-8393-7ac82c458234",
+      "author": "user",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "80cb8705-67e1-4723-bac3-307a87910f46",
+      "timestamp": 1752510585.712465
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "id": "call_9yMLYgkAtOnjzIYe9ZEVKr9i",
+              "args": {
+                "request": "Cotización para una familia de 5 personas: hombre de 29 años, hijo de 10 meses, esposa de 23 años, padre de 60 años y madre de 43 años."
+              },
+              "name": "quotation_agent"
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "partial": false,
+      "invocationId": "e-4f5c65f1-0a62-4e2f-8393-7ac82c458234",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "5b9c27bc-9825-41cc-82ce-38c4e598a356",
+      "timestamp": 1752510585.737094
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "functionResponse": {
+              "id": "call_9yMLYgkAtOnjzIYe9ZEVKr9i",
+              "name": "quotation_agent",
+              "response": {
+                "result": "{\"complete_output\":\"Aquí tienes la cotización para cada integrante de la familia: 1. Hombre de 29 años: **Vitalia Mas Salud** - **$56** mensuales. 2. Hijo de 10 meses: **Vitalia Mas Salud** - **$74** mensuales. 3. Esposa de 23 años: **Vitalia Mas Salud** - **$57** mensuales. 4. Padre de 60 años: **Vitalia Mas Active** - **$66** mensuales. 5. Madre de 43 años: **Vitalia Mas Active** - **$66** mensuales. \\n\\n### Resumen de costos: - Vitalia Mas Salud (Hombre de 29 años) : **$56** - Vitalia Mas Salud (Hijo de 10 meses): **$74** - Vitalia Mas Salud (Esposa de 23 años): **$57** - Vitalia Mas Active (Padre de 60 años): **$66** - Vitalia Mas Active (Madre de 43 años): **$66**   \\n\\n### Plan Total Mensual - Total = $56 + $74 + $57 + $66 + $66 = **$319** \\n\\n### Beneficios: **Vitalia Mas Salud:** - Límite anual de gastos: 10,000 USD. - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs. - Descuentos en internación: 80%. - Descuentos en medicamentos en hospitalización: 70%. - Descuentos en emergencias: 70%. - Descuentos en servicios ambulatorios y diagnósticos: 70%. - Descuentos en farmacias (Farmacorp): 60%. - Servicio personalizable de odontología y asistencia médica al viajero.  \\n\\n**Vitalia Mas Active:** - Límite anual de gastos: 10,000 USD. - Consultas ilimitadas y sin copago con médico personal. - Copagos para especialidades: 50 a 70 Bs. - Descuentos en internación: 50%. - Descuentos en medicamentos en hospitalización: 50%. - Descuentos en emergencias: 50%. - Descuentos en servicios ambulatorios y diagnósticos: 80%. - Descuentos en farmacias (Farmacorp): 20%. \\n\\nSi necesitas más información o realizar ajustes a la cotización, ¡dímelo!\",\"estado\":\"exitoso\",\"se_cotizo\":true,\"cotizaciones_personas\":[{\"alias\":\"Hombre de 29 años\",\"edad\":29,\"genero\":\"M\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":56},{\"alias\":\"Hijo de 10 meses\",\"edad\":0,\"genero\":\"M\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":74},{\"alias\":\"Esposa de 23 años\",\"edad\":23,\"genero\":\"F\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":57},{\"alias\":\"Padre de 60 años\",\"edad\":60,\"genero\":\"M\",\"nombre_plan\":\"Vitalia Mas Active\",\"precio_mensual\":66},{\"alias\":\"Madre de 43 años\",\"edad\":43,\"genero\":\"F\",\"nombre_plan\":\"Vitalia Mas Active\",\"precio_mensual\":66}],\"cobertura_planes\":[\"Límite anual de gastos: 10,000 USD para Vitalia Mas Salud\",\"Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs para Vitalia Mas Salud\",\"Descuentos en internación: 80% para Vitalia Mas Salud\",\"Descuentos en medicamentos en hospitalización: 70% para Vitalia Mas Salud\",\"Descuentos en emergencias: 70% para Vitalia Mas Salud\",\"Descuentos en servicios ambulatorios y diagnósticos: 70% para Vitalia Mas Salud\",\"Descuentos en farmacias (Farmacorp): 60% para Vitalia Mas Salud\",\"Servicio personalizable de odontología y asistencia médica al viajero para Vitalia Mas Salud\",\"Límite anual de gastos: 10,000 USD para Vitalia Mas Active\",\"Consultas ilimitadas y sin copago con médico personal para Vitalia Mas Active\",\"Copagos para especialidades: 50 a 70 Bs para Vitalia Mas Active\",\"Descuentos en internación: 50% para Vitalia Mas Active\",\"Descuentos en medicamentos en hospitalización: 50% para Vitalia Mas Active\",\"Descuentos en emergencias: 50% para Vitalia Mas Active\",\"Descuentos en servicios ambulatorios y diagnósticos: 80% para Vitalia Mas Active\",\"Descuentos en farmacias (Farmacorp): 20% para Vitalia Mas Active\"]}"
+              }
+            }
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-4f5c65f1-0a62-4e2f-8393-7ac82c458234",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {
+          "quotation_agent_result": "Aquí tienes la cotización para cada integrante de la familia:\n\n1. Hombre de 29 años: **Vitalia Mas Salud** - **$56** mensuales.\n2. Hijo de 10 meses: **Vitalia Mas Salud** - **$74** mensuales.\n3. Esposa de 23 años: **Vitalia Mas Salud** - **$57** mensuales.\n4. Padre de 60 años: **Vitalia Mas Active** - **$66** mensuales.\n5. Madre de 43 años: **Vitalia Mas Active** - **$66** mensuales.\n\n### Resumen de costos:\n- Vitalia Mas Salud (Hombre de 29 años) : **$56**\n- Vitalia Mas Salud (Hijo de 10 meses): **$74**\n- Vitalia Mas Salud (Esposa de 23 años): **$57**\n- Vitalia Mas Active (Padre de 60 años): **$66**\n- Vitalia Mas Active (Madre de 43 años): **$66**\n\n### Plan Total Mensual\n- Total = $56 + $74 + $57 + $66 + $66 = **$319**\n\n### Beneficios:\n\n**Vitalia Mas Salud:**\n- Límite anual de gastos: 10,000 USD.\n- Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs.\n- Descuentos en internación: 80%.\n- Descuentos en medicamentos en hospitalización: 70%.\n- Descuentos en emergencias: 70%.\n- Descuentos en servicios ambulatorios y diagnósticos: 70%.\n- Descuentos en farmacias (Farmacorp): 60%.\n- Servicio personalizable de odontología y asistencia médica al viajero.\n\n**Vitalia Mas Active:**\n- Límite anual de gastos: 10,000 USD.\n- Consultas ilimitadas y sin copago con médico personal.\n- Copagos para especialidades: 50 a 70 Bs.\n- Descuentos en internación: 50%.\n- Descuentos en medicamentos en hospitalización: 50%.\n- Descuentos en emergencias: 50%.\n- Descuentos en servicios ambulatorios y diagnósticos: 80%.\n- Descuentos en farmacias (Farmacorp): 20%.\n\nSi necesitas más información o realizar ajustes a la cotización, ¡dímelo!",
+          "quotation_data": {
+            "complete_output": "Aquí tienes la cotización para cada integrante de la familia: 1. Hombre de 29 años: **Vitalia Mas Salud** - **$56** mensuales. 2. Hijo de 10 meses: **Vitalia Mas Salud** - **$74** mensuales. 3. Esposa de 23 años: **Vitalia Mas Salud** - **$57** mensuales. 4. Padre de 60 años: **Vitalia Mas Active** - **$66** mensuales. 5. Madre de 43 años: **Vitalia Mas Active** - **$66** mensuales. \n\n### Resumen de costos: - Vitalia Mas Salud (Hombre de 29 años) : **$56** - Vitalia Mas Salud (Hijo de 10 meses): **$74** - Vitalia Mas Salud (Esposa de 23 años): **$57** - Vitalia Mas Active (Padre de 60 años): **$66** - Vitalia Mas Active (Madre de 43 años): **$66**   \n\n### Plan Total Mensual - Total = $56 + $74 + $57 + $66 + $66 = **$319** \n\n### Beneficios: **Vitalia Mas Salud:** - Límite anual de gastos: 10,000 USD. - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs. - Descuentos en internación: 80%. - Descuentos en medicamentos en hospitalización: 70%. - Descuentos en emergencias: 70%. - Descuentos en servicios ambulatorios y diagnósticos: 70%. - Descuentos en farmacias (Farmacorp): 60%. - Servicio personalizable de odontología y asistencia médica al viajero.  \n\n**Vitalia Mas Active:** - Límite anual de gastos: 10,000 USD. - Consultas ilimitadas y sin copago con médico personal. - Copagos para especialidades: 50 a 70 Bs. - Descuentos en internación: 50%. - Descuentos en medicamentos en hospitalización: 50%. - Descuentos en emergencias: 50%. - Descuentos en servicios ambulatorios y diagnósticos: 80%. - Descuentos en farmacias (Farmacorp): 20%. \n\nSi necesitas más información o realizar ajustes a la cotización, ¡dímelo!",
+            "estado": "exitoso",
+            "se_cotizo": true,
+            "cotizaciones_personas": [
+              {
+                "alias": "Hombre de 29 años",
+                "edad": 29,
+                "genero": "M",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 56
+              },
+              {
+                "alias": "Hijo de 10 meses",
+                "edad": 0,
+                "genero": "M",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 74
+              },
+              {
+                "alias": "Esposa de 23 años",
+                "edad": 23,
+                "genero": "F",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 57
+              },
+              {
+                "alias": "Padre de 60 años",
+                "edad": 60,
+                "genero": "M",
+                "nombre_plan": "Vitalia Mas Active",
+                "precio_mensual": 66
+              },
+              {
+                "alias": "Madre de 43 años",
+                "edad": 43,
+                "genero": "F",
+                "nombre_plan": "Vitalia Mas Active",
+                "precio_mensual": 66
+              }
+            ],
+            "cobertura_planes": [
+              "Límite anual de gastos: 10,000 USD para Vitalia Mas Salud",
+              "Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs para Vitalia Mas Salud",
+              "Descuentos en internación: 80% para Vitalia Mas Salud",
+              "Descuentos en medicamentos en hospitalización: 70% para Vitalia Mas Salud",
+              "Descuentos en emergencias: 70% para Vitalia Mas Salud",
+              "Descuentos en servicios ambulatorios y diagnósticos: 70% para Vitalia Mas Salud",
+              "Descuentos en farmacias (Farmacorp): 60% para Vitalia Mas Salud",
+              "Servicio personalizable de odontología y asistencia médica al viajero para Vitalia Mas Salud",
+              "Límite anual de gastos: 10,000 USD para Vitalia Mas Active",
+              "Consultas ilimitadas y sin copago con médico personal para Vitalia Mas Active",
+              "Copagos para especialidades: 50 a 70 Bs para Vitalia Mas Active",
+              "Descuentos en internación: 50% para Vitalia Mas Active",
+              "Descuentos en medicamentos en hospitalización: 50% para Vitalia Mas Active",
+              "Descuentos en emergencias: 50% para Vitalia Mas Active",
+              "Descuentos en servicios ambulatorios y diagnósticos: 80% para Vitalia Mas Active",
+              "Descuentos en farmacias (Farmacorp): 20% para Vitalia Mas Active"
+            ]
+          }
+        },
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "60a337ec-ed51-4664-88ee-eb36f26d578e",
+      "timestamp": 1752510617.992287
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "Aquí tienes la cotización actualizada para tu familia de 5 personas:\n\n1. Hombre de 29 años: **Vitalia Mas Salud** - $56  \n2. Hijo de 10 meses: **Vitalia Mas Salud** - $74  \n3. Esposa de 23 años: **Vitalia Mas Salud** - $57  \n4. Padre de 60 años: **Vitalia Mas Active** - $66  \n5. Madre de 43 años: **Vitalia Mas Active** - $66  \n\n### Resumen de precios mensuales:\n- **Vitalia Mas Salud (29 años)**: $56\n- **Vitalia Mas Salud (10 meses)**: $74\n- **Vitalia Mas Salud (23 años)**: $57\n- **Vitalia Mas Active (60 años)**: $66\n- **Vitalia Mas Active (43 años)**: $66\n\n### Total mensual: \n- **$56 + $74 + $57 + $66 + $66 = $319**\n\n### Beneficios incluidos en cada plan: \n- **Vitalia Mas Salud**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs.\n  - Descuentos en internación: 80%.\n  - Descuentos en medicamentos en hospitalización: 70%.\n  - Descuentos en emergencias: 70%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 70%.\n  - Descuentos en farmacias (Farmacorp): 60%.\n  - Servicio personalizable de odontología y asistencia médica al viajero.\n\n- **Vitalia Mas Active**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas ilimitadas y sin copago con médico personal.\n  - Copagos para especialidades: 50 a 70 Bs.\n  - Descuentos en internación: 50%.\n  - Descuentos en medicamentos en hospitalización: 50%.\n  - Descuentos en emergencias: 50%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 80%.\n  - Descuentos en farmacias (Farmacorp): 20%.  \n\nSi necesitas más información o realizar ajustes a la cotización, ¡dímelo!"
+          }
+        ],
+        "role": "model"
+      },
+      "partial": false,
+      "invocationId": "e-4f5c65f1-0a62-4e2f-8393-7ac82c458234",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "523337ce-eec5-4fd0-a2c1-dc497ff2721c",
+      "timestamp": 1752510627.75886
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "agrega a mi hermana a mi cotizacion por favor ella tiene 18 años y es mujer"
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-d86f7bd5-85c5-43e6-991a-647b432d2837",
+      "author": "user",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "66fc253a-cd46-490a-9155-da15374d8209",
+      "timestamp": 1752587583.030062
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "functionCall": {
+              "id": "call_mlWmu97oMyjSNzAFjtm3qNqA",
+              "args": {
+                "request": "Cotización para una familia de 6 personas: hombre de 29 años, hijo de 10 meses, esposa de 23 años, padre de 60 años, madre de 43 años y hermana de 18 años."
+              },
+              "name": "quotation_agent"
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "partial": false,
+      "invocationId": "e-d86f7bd5-85c5-43e6-991a-647b432d2837",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "aa7a9c0e-e8fc-4aaf-a6d6-20bd36ea5586",
+      "timestamp": 1752587583.056615
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "functionResponse": {
+              "id": "call_mlWmu97oMyjSNzAFjtm3qNqA",
+              "name": "quotation_agent",
+              "response": {
+                "result": "{\"complete_output\":\"Aquí tienes la cotización para tu familia de 6 personas:\\n\\n1. Hombre de 29 años: Vitalia Mas Salud - Precio mensual: $56\\n2. Hijo de 10 meses: Vitalia Mas Salud - Precio mensual: $74\\n3. Esposa de 23 años: Vitalia Mas Salud - Precio mensual: $57\\n4. Padre de 60 años: Vitalia Mas Active - Precio mensual: $66\\n5. Madre de 43 años: Vitalia Mas Active - Precio mensual: $66\\n6. Hermana de 18 años: Vitalia Mas Salud - Precio mensual: $53\\n\\nCosto Total Mensual: $372\\n\\n### Resumen de Planes Cotizados:\\n- **Vitalia Mas Salud (0 a 49 años)**\\n  - Límite anual de gastos: 10,000 USD\\n  - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs\\n  - Descuentos en internación: 80%\\n  - Descuentos en medicamentos en hospitalización: 70%\\n  - Descuentos en emergencias: 70%\\n  - Descuentos en servicios ambulatorios y diagnósticos: 70%\\n  - Descuentos en farmacias (Farmacorp): 60%\\n  - Servicio personalizable de odontología y asistencia médica al viajero.\\n\\n- **Vitalia Mas Active (mayores de 49 años)**\\n  - Límite anual de gastos: 10,000 USD\\n  - Consultas ilimitadas y sin copago con médico personal.\\n  - Copagos para especialidades: 50 a 70 Bs\\n  - Descuentos en internación: 50%\\n  - Descuentos en medicamentos en hospitalización: 50%\\n  - Descuentos en emergencias: 50%\\n  - Descuentos en servicios ambulatorios y diagnósticos: 80%\\n  - Descuentos en farmacias (Farmacorp): 20%\",\"estado\":\"exitoso\",\"se_cotizo\":true,\"cotizaciones_personas\":[{\"alias\":\"hombre 29 años\",\"edad\":29,\"genero\":\"M\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":56},{\"alias\":\"hijo 10 meses\",\"edad\":0,\"genero\":\"M\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":74},{\"alias\":\"esposa 23 años\",\"edad\":23,\"genero\":\"F\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":57},{\"alias\":\"padre 60 años\",\"edad\":60,\"genero\":\"M\",\"nombre_plan\":\"Vitalia Mas Active\",\"precio_mensual\":66},{\"alias\":\"madre 43 años\",\"edad\":43,\"genero\":\"F\",\"nombre_plan\":\"Vitalia Mas Active\",\"precio_mensual\":66},{\"alias\":\"hermana 18 años\",\"edad\":18,\"genero\":\"F\",\"nombre_plan\":\"Vitalia Mas Salud\",\"precio_mensual\":53}],\"cobertura_planes\":[\"Vitalia Mas Salud: Límite anual de gastos: 10,000 USD; Consultas médicas ilimitadas desde el primer día; Copagos entre 50 y 70 Bs; Descuentos en internación: 80%; Descuentos en medicamentos en hospitalización: 70%; Descuentos en emergencias: 70%; Descuentos en servicios ambulatorios y diagnósticos: 70%; Descuentos en farmacias (Farmacorp): 60%; Servicio personalizable de odontología y asistencia médica al viajero.\",\"Vitalia Mas Active: Límite anual de gastos: 10,000 USD; Consultas ilimitadas y sin copago con médico personal; Copagos para especialidades: 50 a 70 Bs; Descuentos en internación: 50%; Descuentos en medicamentos en hospitalización: 50%; Descuentos en emergencias: 50%; Descuentos en servicios ambulatorios y diagnósticos: 80%; Descuentos en farmacias (Farmacorp): 20%\"]}"
+              }
+            }
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-d86f7bd5-85c5-43e6-991a-647b432d2837",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {
+          "quotation_agent_result": "Aquí tienes la cotización para tu familia de 6 personas:\n\n1. Hombre de 29 años: **Vitalia Mas Salud** - Precio mensual: **$56**\n2. Hijo de 10 meses: **Vitalia Mas Salud** - Precio mensual: **$74**\n3. Esposa de 23 años: **Vitalia Mas Salud** - Precio mensual: **$57**\n4. Padre de 60 años: **Vitalia Mas Active** - Precio mensual: **$66**\n5. Madre de 43 años: **Vitalia Mas Active** - Precio mensual: **$66**\n6. Hermana de 18 años: **Vitalia Mas Salud** - Precio mensual: **$53**\n\n**Costo Total Mensual: $56 + $74 + $57 + $66 + $66 + $53 = $372**\n\n### Resumen de Planes Cotizados:\n- **Vitalia Mas Salud (0 a 49 años)**\n  - Límite anual de gastos: **10,000 USD**\n  - Consultas médicas ilimitadas desde el primer día, copagos entre **50 y 70 Bs**\n  - Descuentos en internación: **80%**\n  - Descuentos en medicamentos en hospitalización: **70%**\n  - Descuentos en emergencias: **70%**\n  - Descuentos en servicios ambulatorios y diagnósticos: **70%**\n  - Descuentos en farmacias (Farmacorp): **60%**\n  - Servicio personalizable de odontología y asistencia médica al viajero.\n\n- **Vitalia Mas Active (mayores de 49 años)**\n  - Límite anual de gastos: **10,000 USD**\n  - Consultas ilimitadas y sin copago con médico personal.\n  - Copagos para especialidades: **50 a 70 Bs**\n  - Descuentos en internación: **50%**\n  - Descuentos en medicamentos en hospitalización: **50%**\n  - Descuentos en emergencias: **50%**\n  - Descuentos en servicios ambulatorios y diagnósticos: **80%**\n  - Descuentos en farmacias (Farmacorp): **20%**\n\nSi necesitas más información o realizar algún ajuste, no dudes en decírmelo.",
+          "quotation_data": {
+            "complete_output": "Aquí tienes la cotización para tu familia de 6 personas:\n\n1. Hombre de 29 años: Vitalia Mas Salud - Precio mensual: $56\n2. Hijo de 10 meses: Vitalia Mas Salud - Precio mensual: $74\n3. Esposa de 23 años: Vitalia Mas Salud - Precio mensual: $57\n4. Padre de 60 años: Vitalia Mas Active - Precio mensual: $66\n5. Madre de 43 años: Vitalia Mas Active - Precio mensual: $66\n6. Hermana de 18 años: Vitalia Mas Salud - Precio mensual: $53\n\nCosto Total Mensual: $372\n\n### Resumen de Planes Cotizados:\n- **Vitalia Mas Salud (0 a 49 años)**\n  - Límite anual de gastos: 10,000 USD\n  - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs\n  - Descuentos en internación: 80%\n  - Descuentos en medicamentos en hospitalización: 70%\n  - Descuentos en emergencias: 70%\n  - Descuentos en servicios ambulatorios y diagnósticos: 70%\n  - Descuentos en farmacias (Farmacorp): 60%\n  - Servicio personalizable de odontología y asistencia médica al viajero.\n\n- **Vitalia Mas Active (mayores de 49 años)**\n  - Límite anual de gastos: 10,000 USD\n  - Consultas ilimitadas y sin copago con médico personal.\n  - Copagos para especialidades: 50 a 70 Bs\n  - Descuentos en internación: 50%\n  - Descuentos en medicamentos en hospitalización: 50%\n  - Descuentos en emergencias: 50%\n  - Descuentos en servicios ambulatorios y diagnósticos: 80%\n  - Descuentos en farmacias (Farmacorp): 20%",
+            "estado": "exitoso",
+            "se_cotizo": true,
+            "cotizaciones_personas": [
+              {
+                "alias": "hombre 29 años",
+                "edad": 29,
+                "genero": "M",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 56
+              },
+              {
+                "alias": "hijo 10 meses",
+                "edad": 0,
+                "genero": "M",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 74
+              },
+              {
+                "alias": "esposa 23 años",
+                "edad": 23,
+                "genero": "F",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 57
+              },
+              {
+                "alias": "padre 60 años",
+                "edad": 60,
+                "genero": "M",
+                "nombre_plan": "Vitalia Mas Active",
+                "precio_mensual": 66
+              },
+              {
+                "alias": "madre 43 años",
+                "edad": 43,
+                "genero": "F",
+                "nombre_plan": "Vitalia Mas Active",
+                "precio_mensual": 66
+              },
+              {
+                "alias": "hermana 18 años",
+                "edad": 18,
+                "genero": "F",
+                "nombre_plan": "Vitalia Mas Salud",
+                "precio_mensual": 53
+              }
+            ],
+            "cobertura_planes": [
+              "Vitalia Mas Salud: Límite anual de gastos: 10,000 USD; Consultas médicas ilimitadas desde el primer día; Copagos entre 50 y 70 Bs; Descuentos en internación: 80%; Descuentos en medicamentos en hospitalización: 70%; Descuentos en emergencias: 70%; Descuentos en servicios ambulatorios y diagnósticos: 70%; Descuentos en farmacias (Farmacorp): 60%; Servicio personalizable de odontología y asistencia médica al viajero.",
+              "Vitalia Mas Active: Límite anual de gastos: 10,000 USD; Consultas ilimitadas y sin copago con médico personal; Copagos para especialidades: 50 a 70 Bs; Descuentos en internación: 50%; Descuentos en medicamentos en hospitalización: 50%; Descuentos en emergencias: 50%; Descuentos en servicios ambulatorios y diagnósticos: 80%; Descuentos en farmacias (Farmacorp): 20%"
+            ]
+          }
+        },
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "fe70b854-489c-449b-9dfe-654c87e9938f",
+      "timestamp": 1752587614.311481
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "Aquí tienes la cotización actualizada para tu familia de 6 personas:\n\n1. Hombre de 29 años: **Vitalia Mas Salud** - $56  \n2. Hijo de 10 meses: **Vitalia Mas Salud** - $74  \n3. Esposa de 23 años: **Vitalia Mas Salud** - $57  \n4. Padre de 60 años: **Vitalia Mas Active** - $66  \n5. Madre de 43 años: **Vitalia Mas Active** - $66  \n6. Hermana de 18 años: **Vitalia Mas Salud** - $53  \n\n### Resumen de precios mensuales:\n- **Vitalia Mas Salud (29 años)**: $56\n- **Vitalia Mas Salud (10 meses)**: $74\n- **Vitalia Mas Salud (23 años)**: $57\n- **Vitalia Mas Active (60 años)**: $66\n- **Vitalia Mas Active (43 años)**: $66\n- **Vitalia Mas Salud (18 años)**: $53\n\n### Total mensual: \n- **$56 + $74 + $57 + $66 + $66 + $53 = $372**\n\n### Beneficios incluidos en cada plan: \n- **Vitalia Mas Salud**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas médicas ilimitadas desde el primer día, copagos entre 50 y 70 Bs.\n  - Descuentos en internación: 80%.\n  - Descuentos en medicamentos en hospitalización: 70%.\n  - Descuentos en emergencias: 70%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 70%.\n  - Descuentos en farmacias (Farmacorp): 60%.\n  - Servicio personalizable de odontología y asistencia médica al viajero.\n\n- **Vitalia Mas Active**:\n  - Límite anual de gastos: 10,000 USD.\n  - Consultas ilimitadas y sin copago con médico personal.\n  - Copagos para especialidades: 50 a 70 Bs.\n  - Descuentos en internación: 50%.\n  - Descuentos en medicamentos en hospitalización: 50%.\n  - Descuentos en emergencias: 50%.\n  - Descuentos en servicios ambulatorios y diagnósticos: 80%.\n  - Descuentos en farmacias (Farmacorp): 20%.  \n\nSi necesitas más información o realizar ajustes a la cotización, ¡dímelo!"
+          }
+        ],
+        "role": "model"
+      },
+      "partial": false,
+      "invocationId": "e-d86f7bd5-85c5-43e6-991a-647b432d2837",
+      "author": "orquestrator_agent",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "76e08add-d15f-4303-9e17-8c673f3ee93b",
+      "timestamp": 1752587614.339862
+    }
+  ],
+  "lastUpdateTime": 1752602014.314658
+}

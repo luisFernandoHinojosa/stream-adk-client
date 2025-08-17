@@ -1,0 +1,710 @@
+{
+  "id": "9ac8f31f-efcc-4087-b131-bc51edec8b35",
+  "appName": "ADKChatApp",
+  "userId": "Uzi1c6eOabT5BJ29X1gBb5DBZRJ2",
+  "state": {
+    "user_info": {
+      "user_id": "Uzi1c6eOabT5BJ29X1gBb5DBZRJ2",
+      "user_name": "MiguelPremium+",
+      "user_timezone": "America/La_Paz",
+      "user_country": "BO"
+    },
+    "categories_map": {
+      "1": "Health and Personal Care",
+      "2": "Work, Business and Professional Projects",
+      "3": "Leisure and Entertainment",
+      "4": "Social Relationships, Celebrations and Social Life",
+      "5": "Finance, Administration, Taxes (Loans, Investments, Insurance)",
+      "6": "Housing, Home and Maintenance",
+      "7": "Beauty, Personal Care and Aesthetics",
+      "8": "Travel and Vacations",
+      "9": "Mental Wellbeing and Personal Development",
+      "10": "Art and Creativity",
+      "11": "Food and Cooking",
+      "12": "Transportation",
+      "13": "Technology and Electronics",
+      "14": "Spirituality and Religious Practices",
+      "15": "Civic Activities, Donations and Charity",
+      "16": "Environment and Sustainability",
+      "17": "Legal and Administrative Matters",
+      "18": "Emergencies and Unexpected Events",
+      "19": "Community and Social Networking",
+      "20": "Miscellaneous/Others",
+      "21": "Sports and Physical Exercise",
+      "22": "Education, Training and Learning",
+      "23": "Organization and Planning",
+      "24": "Family and Parenting",
+      "25": "Pets and Animal Care",
+      "26": "Clothing and Accessories",
+      "27": "Subscriptions and Digital Services",
+      "28": "Specialized or Unusual Activities",
+      "29": "Gifts and Special Details",
+      "30": "Hobbies, Crafts and Collectibles",
+      "31": "Bars, Restaurants and Nightlife",
+      "32": "Clubs, Memberships and Associations",
+      "33": "Security and Protection",
+      "34": "Sleep and Rest"
+    },
+    "recent_info": {
+      "daily_moods": {
+        "yesterday": [
+          "Happy",
+          "Motivated",
+          "Energetic"
+        ],
+        "today": []
+      },
+      "recent_activities": [
+        {
+          "activity_name": "reunion de trabajo",
+          "category_id": 2,
+          "created_at": 1753494337
+        },
+        {
+          "activity_name": "Trabajar en el proyecto de botsi",
+          "category_id": 2,
+          "created_at": 1753492965
+        },
+        {
+          "activity_name": "reunion de trabajo",
+          "category_id": 2,
+          "created_at": 1753492898
+        },
+        {
+          "activity_name": "Reunion de trabajo",
+          "category_id": 2,
+          "created_at": 1753131497
+        },
+        {
+          "activity_name": "Reunion de trabajo",
+          "category_id": 2,
+          "created_at": 1753129109
+        }
+      ],
+      "recent_transactions": [
+        {
+          "name": "comida",
+          "transaction_type": "Expense",
+          "category_id": 11,
+          "created_at": 1753493033
+        },
+        {
+          "name": "Factura de gas",
+          "transaction_type": "Expense",
+          "category_id": 6,
+          "created_at": 1753125170
+        },
+        {
+          "name": "Desayuno",
+          "transaction_type": "Expense",
+          "category_id": 11,
+          "created_at": 1753125166
+        },
+        {
+          "name": "Insumos para cocinar la cena",
+          "transaction_type": "Expense",
+          "category_id": 11,
+          "created_at": 1753123020
+        },
+        {
+          "name": "Pago que me debian",
+          "transaction_type": "Income",
+          "category_id": 20,
+          "created_at": 1753122943
+        }
+      ]
+    }
+  },
+  "events": [
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "hola "
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-d6d47974-4038-4e62-9918-fd584507cee7",
+      "author": "user",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "edazujjS",
+      "timestamp": 1753479518.620807
+    },
+    {
+      "invocationId": "e-d6d47974-4038-4e62-9918-fd584507cee7",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {
+          "user_info": {
+            "user_id": "Uzi1c6eOabT5BJ29X1gBb5DBZRJ2",
+            "user_name": "MiguelPremium+",
+            "user_timezone": "America/La_Paz",
+            "user_country": "BO"
+          },
+          "categories_map": {
+            "1": "Health and Personal Care",
+            "2": "Work, Business and Professional Projects",
+            "3": "Leisure and Entertainment",
+            "4": "Social Relationships, Celebrations and Social Life",
+            "5": "Finance, Administration, Taxes (Loans, Investments, Insurance)",
+            "6": "Housing, Home and Maintenance",
+            "7": "Beauty, Personal Care and Aesthetics",
+            "8": "Travel and Vacations",
+            "9": "Mental Wellbeing and Personal Development",
+            "10": "Art and Creativity",
+            "11": "Food and Cooking",
+            "12": "Transportation",
+            "13": "Technology and Electronics",
+            "14": "Spirituality and Religious Practices",
+            "15": "Civic Activities, Donations and Charity",
+            "16": "Environment and Sustainability",
+            "17": "Legal and Administrative Matters",
+            "18": "Emergencies and Unexpected Events",
+            "19": "Community and Social Networking",
+            "20": "Miscellaneous/Others",
+            "21": "Sports and Physical Exercise",
+            "22": "Education, Training and Learning",
+            "23": "Organization and Planning",
+            "24": "Family and Parenting",
+            "25": "Pets and Animal Care",
+            "26": "Clothing and Accessories",
+            "27": "Subscriptions and Digital Services",
+            "28": "Specialized or Unusual Activities",
+            "29": "Gifts and Special Details",
+            "30": "Hobbies, Crafts and Collectibles",
+            "31": "Bars, Restaurants and Nightlife",
+            "32": "Clubs, Memberships and Associations",
+            "33": "Security and Protection",
+            "34": "Sleep and Rest"
+          },
+          "recent_info": {
+            "daily_moods": {
+              "yesterday": [
+                "Happy",
+                "Motivated",
+                "Energetic"
+              ],
+              "today": []
+            },
+            "recent_activities": [
+              {
+                "activity_name": "Trabajar en el proyecto de botsi",
+                "category_id": 2,
+                "created_at": 1753492965
+              },
+              {
+                "activity_name": "reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753492898
+              },
+              {
+                "activity_name": "Reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753131497
+              },
+              {
+                "activity_name": "Reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753129109
+              },
+              {
+                "activity_name": "Cocinar el almuerzo",
+                "category_id": 11,
+                "created_at": 1753027831
+              }
+            ],
+            "recent_transactions": [
+              {
+                "name": "comida",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753493033
+              },
+              {
+                "name": "Factura de gas",
+                "transaction_type": "Expense",
+                "category_id": 6,
+                "created_at": 1753125170
+              },
+              {
+                "name": "Desayuno",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753125166
+              },
+              {
+                "name": "Insumos para cocinar la cena",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753123020
+              },
+              {
+                "name": "Pago que me debian",
+                "transaction_type": "Income",
+                "category_id": 20,
+                "created_at": 1753122943
+              }
+            ]
+          }
+        },
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "RZi9xWi9",
+      "timestamp": 1753479520.159346
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "¡Hola! ¿Cómo puedo ayudarte hoy? ¿Quieres registrar una actividad, una transacción, o necesitas un reporte de estadísticas?\n"
+          }
+        ],
+        "role": "model"
+      },
+      "invocationId": "e-d6d47974-4038-4e62-9918-fd584507cee7",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "dTQUov8b",
+      "timestamp": 1753479520.360512
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "quiero que registres esta actividad que realice el dia de ayer a las 17:00 a 19:00 sali al cine con unos amigos "
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-88540186-888c-44c9-a2c2-082dcadc7e82",
+      "author": "user",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "7M7WkbcO",
+      "timestamp": 1753479851.322402
+    },
+    {
+      "invocationId": "e-88540186-888c-44c9-a2c2-082dcadc7e82",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {
+          "recent_info": {
+            "daily_moods": {
+              "yesterday": [
+                "Happy",
+                "Motivated",
+                "Energetic"
+              ],
+              "today": []
+            },
+            "recent_activities": [
+              {
+                "activity_name": "Trabajar en el proyecto de botsi",
+                "category_id": 2,
+                "created_at": 1753492965
+              },
+              {
+                "activity_name": "reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753492898
+              },
+              {
+                "activity_name": "Reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753131497
+              },
+              {
+                "activity_name": "Reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753129109
+              },
+              {
+                "activity_name": "Cocinar el almuerzo",
+                "category_id": 11,
+                "created_at": 1753027831
+              }
+            ],
+            "recent_transactions": [
+              {
+                "name": "comida",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753493033
+              },
+              {
+                "name": "Factura de gas",
+                "transaction_type": "Expense",
+                "category_id": 6,
+                "created_at": 1753125170
+              },
+              {
+                "name": "Desayuno",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753125166
+              },
+              {
+                "name": "Insumos para cocinar la cena",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753123020
+              },
+              {
+                "name": "Pago que me debian",
+                "transaction_type": "Income",
+                "category_id": 20,
+                "created_at": 1753122943
+              }
+            ]
+          }
+        },
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "IE8QPd8n",
+      "timestamp": 1753479853.078223
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "Entiendo. Para registrar la actividad, necesito saber cuánto tiempo duró. Dijiste que fue de las 17:00 a las 19:00, ¿eso serían 120 minutos? Además, ¿a qué categoría pertenece esta actividad? Aquí tienes la lista de categorías:\n\n1.  Salud y Cuidado Personal\n2.  Trabajo, Negocios y Proyectos Profesionales\n3.  Ocio y Entretenimiento\n4.  Relaciones Sociales, Celebraciones y Vida Social\n5.  Finanzas, Administración, Impuestos (Préstamos, Inversiones, Seguros)\n6.  Vivienda, Hogar y Mantenimiento\n7.  Belleza, Cuidado Personal y Estética\n8.  Viajes y Vacaciones\n9.  Bienestar Mental y Desarrollo Personal\n10. Arte y Creatividad\n11. Comida y Cocina\n12. Transporte\n13. Tecnología y Electrónica\n14. Espiritualidad y Prácticas Religiosas\n15. Actividades Cívicas, Donaciones y Caridad\n16. Medio Ambiente y Sostenibilidad\n17. Asuntos Legales y Administrativos\n18. Emergencias y Eventos Inesperados\n19. Comunidad y Redes Sociales\n20. Miscelánea/Otros\n21. Deportes y Ejercicio Físico\n22. Educación, Formación y Aprendizaje\n23. Organización y Planificación\n24. Familia y Crianza\n25. Mascotas y Cuidado de Animales\n26. Ropa y Accesorios\n27. Suscripciones y Servicios Digitales\n28. Actividades Especializadas o Inusuales\n29. Regalos y Detalles Especiales\n30. Aficiones, Manualidades y Coleccionables\n31. Bares, Restaurantes y Vida Nocturna\n32. Clubes, Membresías y Asociaciones\n33. Seguridad y Protección\n34. Sueño y Descanso\n"
+          }
+        ],
+        "role": "model"
+      },
+      "invocationId": "e-88540186-888c-44c9-a2c2-082dcadc7e82",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "dvf9tb71",
+      "timestamp": 1753479853.256417
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "quiero que registres esta actividad del dia de ayer que fue a las 10am y duro 2 horas  el motivo fue una reunion de trabajo"
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-0a261513-d257-4ab6-b237-8e8384e71f15",
+      "author": "user",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "9FP6bAJE",
+      "timestamp": 1753479933.177871
+    },
+    {
+      "invocationId": "e-0a261513-d257-4ab6-b237-8e8384e71f15",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {
+          "recent_info": {
+            "daily_moods": {
+              "yesterday": [
+                "Happy",
+                "Motivated",
+                "Energetic"
+              ],
+              "today": []
+            },
+            "recent_activities": [
+              {
+                "activity_name": "Trabajar en el proyecto de botsi",
+                "category_id": 2,
+                "created_at": 1753492965
+              },
+              {
+                "activity_name": "reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753492898
+              },
+              {
+                "activity_name": "Reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753131497
+              },
+              {
+                "activity_name": "Reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753129109
+              },
+              {
+                "activity_name": "Cocinar el almuerzo",
+                "category_id": 11,
+                "created_at": 1753027831
+              }
+            ],
+            "recent_transactions": [
+              {
+                "name": "comida",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753493033
+              },
+              {
+                "name": "Factura de gas",
+                "transaction_type": "Expense",
+                "category_id": 6,
+                "created_at": 1753125170
+              },
+              {
+                "name": "Desayuno",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753125166
+              },
+              {
+                "name": "Insumos para cocinar la cena",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753123020
+              },
+              {
+                "name": "Pago que me debian",
+                "transaction_type": "Income",
+                "category_id": 20,
+                "created_at": 1753122943
+              }
+            ]
+          }
+        },
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "vKfnzqVm",
+      "timestamp": 1753479934.271794
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "De acuerdo. Registraré una actividad de 120 minutos (2 horas) para el día de ayer, 2025-07-24 a las 10:00:00, relacionada con una reunión de trabajo. ¿Es correcto?\n"
+          },
+          {
+            "functionCall": {
+              "id": "adk-0c38b2b7-87c3-4627-89e0-0ae53b2ae68b",
+              "args": {
+                "is_completed": true,
+                "performed_at_str": "2025-07-24 10:00:00",
+                "minutes_duration": 120,
+                "activity_name": "reunion de trabajo",
+                "category_id": 2
+              },
+              "name": "create_user_activity"
+            }
+          }
+        ],
+        "role": "model"
+      },
+      "invocationId": "e-0a261513-d257-4ab6-b237-8e8384e71f15",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "9GHUnuYm",
+      "timestamp": 1753479934.456752
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "functionResponse": {
+              "id": "adk-0c38b2b7-87c3-4627-89e0-0ae53b2ae68b",
+              "name": "create_user_activity",
+              "response": {
+                "result": "{\"status\": \"SUCCESS\", \"data\": {\"activity_name\": \"reunion de trabajo\", \"category_id\": 2, \"minutes_duration\": 120, \"performed_at\": \"2025-07-24 10:00:00\", \"is_completed\": true, \"activity_id\": 144028, \"created_at\": \"2025-07-25 21:45:37.257354\", \"updated_at\": \"2025-07-25 21:45:37.257354\", \"section_day\": 3, \"habit_id\": null}}"
+              }
+            }
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-0a261513-d257-4ab6-b237-8e8384e71f15",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "Dw061riU",
+      "timestamp": 1753479938.364431
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "¡Perfecto! La reunión de trabajo de 120 minutos de ayer a las 10:00 ha sido registrada exitosamente.\n"
+          }
+        ],
+        "role": "model"
+      },
+      "invocationId": "e-0a261513-d257-4ab6-b237-8e8384e71f15",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "lJy38QG4",
+      "timestamp": 1753479938.545957
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "hola"
+          }
+        ],
+        "role": "user"
+      },
+      "invocationId": "e-62aae54d-ba8f-41fd-b382-7c9cda63fe18",
+      "author": "user",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "2k194BwE",
+      "timestamp": 1753480103.571802
+    },
+    {
+      "invocationId": "e-62aae54d-ba8f-41fd-b382-7c9cda63fe18",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {
+          "recent_info": {
+            "daily_moods": {
+              "yesterday": [
+                "Happy",
+                "Motivated",
+                "Energetic"
+              ],
+              "today": []
+            },
+            "recent_activities": [
+              {
+                "activity_name": "reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753494337
+              },
+              {
+                "activity_name": "Trabajar en el proyecto de botsi",
+                "category_id": 2,
+                "created_at": 1753492965
+              },
+              {
+                "activity_name": "reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753492898
+              },
+              {
+                "activity_name": "Reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753131497
+              },
+              {
+                "activity_name": "Reunion de trabajo",
+                "category_id": 2,
+                "created_at": 1753129109
+              }
+            ],
+            "recent_transactions": [
+              {
+                "name": "comida",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753493033
+              },
+              {
+                "name": "Factura de gas",
+                "transaction_type": "Expense",
+                "category_id": 6,
+                "created_at": 1753125170
+              },
+              {
+                "name": "Desayuno",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753125166
+              },
+              {
+                "name": "Insumos para cocinar la cena",
+                "transaction_type": "Expense",
+                "category_id": 11,
+                "created_at": 1753123020
+              },
+              {
+                "name": "Pago que me debian",
+                "transaction_type": "Income",
+                "category_id": 20,
+                "created_at": 1753122943
+              }
+            ]
+          }
+        },
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "X1blrR6H",
+      "timestamp": 1753480104.951594
+    },
+    {
+      "content": {
+        "parts": [
+          {
+            "text": "¡Hola! ¿En qué te puedo ayudar hoy? ¿Quieres registrar una actividad, una transacción o necesitas un reporte de estadísticas?\n"
+          }
+        ],
+        "role": "model"
+      },
+      "invocationId": "e-62aae54d-ba8f-41fd-b382-7c9cda63fe18",
+      "author": "Orchestrator",
+      "actions": {
+        "stateDelta": {},
+        "artifactDelta": {},
+        "requestedAuthConfigs": {}
+      },
+      "longRunningToolIds": [],
+      "id": "5x3hJPaG",
+      "timestamp": 1753480105.123581
+    }
+  ],
+  "lastUpdateTime": 1753494504
+}

@@ -1,0 +1,72 @@
+[
+	{
+		"item_name": "Galaxy X20 Smartphone",
+		"item_description": "Smartphone with 6.5-inch AMOLED display and 128GB storage.",
+		"price": 799.99,
+		"price_discount": 699.99,
+		"categories": ["technology", "smartphones"]
+	},
+	{
+		"item_name": "CleanBot 3000 Robotic Vacuum",
+		"item_description": "Automatic vacuum with smart sensor and self-charging system.",
+		"price": 299.99,
+		"price_discount": null,
+		"categories": ["home", "appliances"]
+	},
+	{
+		"item_name": "50'' 4K UHD Smart TV",
+		"item_description": "Smart TV with 4K resolution and Android TV operating system.",
+		"price": 649.0,
+		"price_discount": 599.0,
+		"categories": ["technology", "televisions"]
+	},
+	{
+		"item_name": "ProSound Wireless Headphones",
+		"item_description": "Bluetooth headphones with noise cancellation and charging case.",
+		"price": 149.99,
+		"price_discount": 129.99,
+		"categories": ["audio", "technology"]
+	},
+	{
+		"item_name": "Max Espresso Coffee Maker",
+		"item_description": "Semi-automatic espresso machine with milk frother.",
+		"price": 199.9,
+		"price_discount": null,
+		"categories": ["kitchen", "home"]
+	},
+	{
+		"item_name": "HP Envy 14 Laptop",
+		"item_description": "Lightweight laptop with Intel i7 processor and 16GB RAM.",
+		"price": 1199.0,
+		"price_discount": 999.0,
+		"categories": ["computing", "technology"]
+	},
+	{
+		"item_name": "StormBox Bluetooth Speaker",
+		"item_description": "Waterproof speaker with 360° sound and 20-hour battery life.",
+		"price": 89.0,
+		"price_discount": null,
+		"categories": ["audio", "portable"]
+	},
+	{
+		"item_name": "RGB Gaming Desk",
+		"item_description": "Ergonomic desk with RGB lights and dual monitor support.",
+		"price": 229.0,
+		"price_discount": null,
+		"categories": ["furniture", "gaming"]
+	},
+	{
+		"item_name": "400L Double Door Refrigerator",
+		"item_description": "Efficient refrigerator with water dispenser and large freezer.",
+		"price": 899.0,
+		"price_discount": 849.0,
+		"categories": ["appliances", "kitchen"]
+	},
+	{
+		"item_name": "Non-Stick Cookware Set",
+		"item_description": "10-piece set with ceramic coating and glass lids.",
+		"price": 159.99,
+		"price_discount": null,
+		"categories": ["kitchen", "home"]
+	}
+]

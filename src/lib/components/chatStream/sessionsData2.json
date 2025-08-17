@@ -1,0 +1,207 @@
+{
+	"id": "f5a9b8e1-6c2d-4f8a-9b3c-7e1d0a9b3c4d",
+	"appName": "orquestrator_agent",
+	"userId": "travel_user_456",
+	"state": {
+		"booking_data": {
+			"departure_city": "Santa Cruz (VVI)",
+			"arrival_city": "Miami (MIA)",
+			"departure_date": "2025-08-15",
+			"passenger_count": 1,
+			"booking_status": "confirmado",
+			"selected_flight": {
+				"airline": "AeroSur",
+				"flight_number": "AS101",
+				"departure_time": "08:00",
+				"arrival_time": "15:30",
+				"price_usd": 450,
+				"duration": "7h 30m"
+			},
+			"confirmation_details": {
+				"booking_reference": "XYZ123",
+				"message": "Su reserva ha sido confirmada. Recibirá un correo electrónico con los detalles en breve."
+			},
+			"flight_options": [
+				{
+					"airline": "AeroSur",
+					"flight_number": "AS101",
+					"departure_time": "08:00",
+					"arrival_time": "15:30",
+					"price_usd": 450,
+					"duration": "7h 30m"
+				},
+				{
+					"airline": "Boliviana de Aviación",
+					"flight_number": "OB766",
+					"departure_time": "21:00",
+					"arrival_time": "04:30",
+					"price_usd": 480,
+					"duration": "7h 30m"
+				},
+				{
+					"airline": "Copa Airlines",
+					"flight_number": "CM150",
+					"departure_time": "15:00",
+					"arrival_time": "23:55",
+					"price_usd": 510,
+					"duration": "8h 55m",
+					"layover": "Panama City (PTY)"
+				}
+			]
+		}
+	},
+	"events": [
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "Hola, quiero reservar un vuelo."
+					}
+				],
+				"role": "user"
+			},
+			"author": "user",
+			"id": "1a2b3c4d-5e6f-7a8b-9c0d-1e2f3a4b5c6d",
+			"timestamp": 1753400000.0
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "¡Con gusto! Puedo ayudarle con eso. ¿Desde dónde y hacia dónde le gustaría volar?"
+					}
+				],
+				"role": "model"
+			},
+			"author": "orquestrator_agent",
+			"id": "2b3c4d5e-6f7a-8b9c-0d1e-2f3a4b5c6d7e",
+			"timestamp": 1753400001.5
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "Desde Santa Cruz a Miami"
+					}
+				],
+				"role": "user"
+			},
+			"author": "user",
+			"id": "3c4d5e6f-7a8b-9c0d-1e2f-3a4b5c6d7e8f",
+			"timestamp": 1753400010.2
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "Perfecto, un vuelo de Santa Cruz a Miami. ¿Para qué fecha?"
+					}
+				],
+				"role": "model"
+			},
+			"author": "orquestrator_agent",
+			"id": "4d5e6f7a-8b9c-0d1e-2f3a-4b5c6d7e8f9g",
+			"timestamp": 1753400011.8
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "Para el 15 de agosto del proximo año"
+					}
+				],
+				"role": "user"
+			},
+			"author": "user",
+			"id": "5e6f7a8b-9c0d-1e2f-3a4b-5c6d7e8f9g0h",
+			"timestamp": 1753400020.0
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"functionCall": {
+							"id": "call_flight_search_tool_12345",
+							"args": {
+								"departure_city": "Santa Cruz (VVI)",
+								"arrival_city": "Miami (MIA)",
+								"departure_date": "2025-08-15"
+							},
+							"name": "flight_search_agent"
+						}
+					}
+				],
+				"role": "model"
+			},
+			"author": "orquestrator_agent",
+			"id": "6f7a8b9c-0d1e-2f3a-4b5c-6d7e8f9g0h1i",
+			"timestamp": 1753400021.0
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "Encontré 3 opciones para usted el 15 de agosto de 2025:\n\n1. **AeroSur (Vuelo AS101)**: Sale 08:00, llega 15:30. Vuelo directo. Precio: $450.\n2. **Boliviana de Aviación (Vuelo OB766)**: Sale 21:00, llega 04:30. Vuelo directo. Precio: $480.\n3. **Copa Airlines (Vuelo CM150)**: Sale 15:00, llega 23:55. 1 escala en Panamá. Precio: $510.\n\n¿Cuál de estas opciones le gustaría reservar?"
+					}
+				],
+				"role": "model"
+			},
+			"author": "orquestrator_agent",
+			"id": "7a8b9c0d-1e2f-3a4b-5c6d-7e8f9g0h1i2j",
+			"timestamp": 1753400035.5
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "El de AeroSur a las 8 am está bien"
+					}
+				],
+				"role": "user"
+			},
+			"author": "user",
+			"id": "8b9c0d1e-2f3a-4b5c-6d7e-8f9g0h1i2j3k",
+			"timestamp": 1753400042.0
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "Excelente elección. El costo total para el vuelo de AeroSur AS101 es de $450. ¿Desea que confirme la reserva?"
+					}
+				],
+				"role": "model"
+			},
+			"author": "orquestrator_agent",
+			"id": "9c0d1e2f-3a4b-5c6d-7e8f-9g0h1i2j3k4l",
+			"timestamp": 1753400043.5
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "si, confirmar por favor"
+					}
+				],
+				"role": "user"
+			},
+			"author": "user",
+			"id": "0d1e2f3a-4b5c-6d7e-8f9g-0h1i2j3k4l5m",
+			"timestamp": 1753400048.0
+		},
+		{
+			"content": {
+				"parts": [
+					{
+						"text": "¡Perfecto! Su vuelo está confirmado. Su número de reserva es **XYZ123**. Le llegará un correo electrónico con todos los detalles en los próximos minutos. ¿Hay algo más en lo que pueda ayudarle?"
+					}
+				],
+				"role": "model"
+			},
+			"author": "orquestrator_agent",
+			"id": "d1e2f3a4-b5c6-d7e8-f9g0-h1i2j3k4l5m6",
+			"timestamp": 1753400055.0
+		}
+	],
+	"lastUpdateTime": 1753400055.5
+}
