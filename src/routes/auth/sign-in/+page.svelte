@@ -80,8 +80,14 @@
 				{/if}
 			</div>
 			<div>
-				<Button type="submit" variant="primary" fullWidth disabled={isLoading} loading={isLoading}
+				<!-- <Button type="submit" variant="primary" fullWidth disabled={isLoading} loading={isLoading}
 					>Sign in</Button
+				> -->
+				<button
+					type="submit"
+					disabled={isLoading}
+					class="w-full rounded-lg bg-light-two p-2 text-light-one transition-all duration-200 hover:bg-light-two_d dark:bg-dark-two dark:text-dark-one dark:hover:bg-dark-two_d"
+					>Sign in</button
 				>
 			</div>
 		</form>

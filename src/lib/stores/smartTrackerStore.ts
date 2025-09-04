@@ -1,4 +1,5 @@
 import type { Event, FunctionCallPart, FunctionResponsePart, SessionData } from '$lib/interface';
+import { generateUid } from '$lib/utils/generateUID';
 import { writable } from 'svelte/store';
 
 const STORAGE_KEY = 'session-chat-data';
@@ -15,7 +16,7 @@ const createDefaultSessionData = (): SessionData => ({
 
 // Datos por defecto para eventos
 const createDefaultEventData = () => ({
-	invocationId: `e-${crypto.randomUUID()}`,
+	invocationId: generateUid(),
 	author: 'user',
 	actions: {
 		stateDelta: {},
@@ -23,7 +24,7 @@ const createDefaultEventData = () => ({
 		requestedAuthConfigs: {}
 	},
 	longRunningToolIds: [],
-	id: crypto.randomUUID(),
+	id: generateUid(),
 	timestamp: Date.now() / 1000 // Timestamp en segundos como en tu ejemplo
 });
 

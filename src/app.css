@@ -38,6 +38,8 @@
 	--color-dark-yellow: #f59e0b;
 
 	--animate-wiggle: wiggle 1s ease-in-out infinite;
+
+	--screen-dynamic: '100dvh';
 	@keyframes wiggle {
 		0%,
 		100% {
@@ -47,6 +49,11 @@
 			transform: rotate(3deg);
 		}
 	}
+}
+html,
+body {
+	padding: 0;
+	margin: 0;
 }
 
 ::-webkit-scrollbar {
@@ -75,29 +82,4 @@
 .scrollbar-hide {
 	-ms-overflow-style: none;
 	scrollbar-width: none;
-}
-
-@keyframes badge-shine {
-	0% {
-		left: -100%;
-	}
-	100% {
-		left: 200%;
-	}
-}
-
-.badge-shine {
-	position: absolute;
-	top: 0;
-	left: -100%;
-	width: 50%;
-	height: 100%;
-	background: linear-gradient(
-		90deg,
-		rgba(255, 255, 255, 0) 0%,
-		rgba(255, 255, 255, 0.8) 50%,
-		rgba(255, 255, 255, 0) 100%
-	);
-	transform: skewX(-20deg);
-	animation: badge-shine 3s infinite;
 }

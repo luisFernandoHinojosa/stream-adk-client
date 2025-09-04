@@ -3,6 +3,7 @@
 	import { Permission } from '$lib/config/permissions';
 	import { UsersIcon } from '$lib/icons/outline';
 	import ChevronRightIcon from '$lib/icons/outline/chevronRightIcon.svelte';
+	import SettingsIcon from '$lib/icons/outline/settingsIcon.svelte';
 	import { LogoutIcon, MoonIcon, SunIcon } from '$lib/icons/solid';
 	import { themeStore } from '$lib/stores/themeStore';
 	import { userStore } from '$lib/stores/userStore';
@@ -88,13 +89,13 @@
 				</button>
 
 				<!-- <div class="my-1 h-px bg-light-two_d dark:bg-dark-two_d"></div> -->
-				<PermissionGuard permission={Permission.VIEW_USERS}>
+				<PermissionGuard permission={Permission.VIEW_SETTINGS}>
 					<button
-						onclick={() => redirect('/users')}
+						onclick={() => redirect('/settings')}
 						class="flex w-full items-center px-3 py-2 text-sm text-light-two transition-colors duration-150 hover:bg-light-two_d hover:text-light-one dark:text-dark-two dark:hover:bg-dark-two_d"
 					>
-						<UsersIcon class="mr-3 h-4 w-4" />
-						<span>Users</span>
+						<SettingsIcon class="mr-3 h-4 w-4" />
+						<span>Settings</span>
 					</button>
 				</PermissionGuard>
 

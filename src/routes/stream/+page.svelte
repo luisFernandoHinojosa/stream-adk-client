@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { page } from '$app/state';
 	import Artefact from '$lib/components/chatStream/artefact.svelte';
 	import ArtefactDropdown from '$lib/components/chatStream/artefactDropdown.svelte';
 	import Chat from '$lib/components/chatStream/chat.svelte';
@@ -15,6 +16,7 @@
 	import type { ChatStreamSend, SessionsHistory } from '$lib/interface';
 	import { smartTrackerService } from '$lib/services/smartTracker.service';
 	import { smartTrackerStore } from '$lib/stores/smartTrackerStore';
+	import { redirect } from '$lib/utils/redirect';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
 
@@ -32,17 +34,28 @@
 	let typeArtefact: number = $state(2);
 	let dropdownOpen: boolean = $state(false);
 
+	let chatContainerRef: HTMLDivElement;
+
+	let chatViewContainer: HTMLDivElement | null = $state(null);
+	// Este es el área que contiene los mensajes y que hará scroll.
+	let chatMessagesAreaRef: HTMLDivElement | null = $state(null);
+
 	//FUNCTIONS
 
 	const handleSendMessage = async (userMessage: string): Promise<void> => {
 		try {
 			smartTrackerStore.addUserEvent(userMessage);
 			isLoading = true;
-			setTimeout(() => scrollToBottom(true), 100);
+			setTimeout(() => {
+				scrollToUserMessage();
+			}, 50);
+			// setTimeout(() => scrollToBottom(true), 100);
 			//solo si el id es 0 creamos una sesion
 			if ($smartTrackerStore.id === '0') {
+				//alert('creando sesion');
 				console.log('creando sesion');
-				await createNewSession();
+				const newSession = await createNewSession();
+				//$smartTrackerStore.id = newSession.session_id;
 			}
 
 			sendMessageData = {
@@ -80,6 +93,7 @@
 	const getSessionsHistories = async () => {
 		try {
 			const sessionsHistoriesResponse = await smartTrackerService.getSessionsHistory();
+			console.log('sessionsHistoriesResponse', sessionsHistoriesResponse);
 			sessionsHistories = sessionsHistoriesResponse;
 		} catch (error) {
 			console.log(error);
@@ -93,6 +107,7 @@
 			//console.log('sessionId', sessionId);
 			const sessionResponse = await smartTrackerService.getSession(sessionId);
 			smartTrackerStore.set(sessionResponse);
+			redirect(`/stream/${sessionResponse.id}`, true);
 			//console.log('sessionResponse', sessionResponse);
 		} catch (error) {
 			isLoadingSessionChat = false;
@@ -104,6 +119,8 @@
 	const createNewSession = async (): Promise<void> => {
 		try {
 			const sessionResponse = await smartTrackerService.createSession();
+			console.log('sessionResponse ...............', sessionResponse);
+			redirect(`/stream/${sessionResponse.session_id}`, true);
 			//console.log('sessionResponse', sessionResponse);
 			$smartTrackerStore.id = sessionResponse.session_id;
 			await getSessionsHistories();
@@ -126,24 +143,51 @@
 		}
 		stateSessionMinimized = !stateSessionMinimized;
 	}
+
 	function toggleArtifact() {
 		artifactOpen = !artifactOpen;
 	}
 
 	const startNewChat = () => {
 		smartTrackerStore.reset();
+		redirect(`/stream`, true);
 		shouldAutoScroll = true;
 	};
 
 	let shouldAutoScroll: boolean = $state(true);
-	const scrollToBottom = (smooth: boolean = true) => {
-		if (chatEndRef && shouldAutoScroll) {
-			chatEndRef.scrollIntoView({
-				behavior: smooth ? 'smooth' : 'instant',
-				block: 'end'
-			});
+
+	// const scrollToBottom = (smooth: boolean = true) => {
+	// 	if (chatEndRef && shouldAutoScroll) {
+	// 		chatEndRef.scrollIntoView({
+	// 			behavior: smooth ? 'smooth' : 'instant',
+	// 			block: 'end'
+	// 		});
+	// 	}
+	// };
+
+	function scrollToBottom(smooth = true) {
+		if (chatMessagesAreaRef) {
+			// Usamos 'instant' en vez de 'auto' para que sea compatible con más navegadores
+			const behavior = smooth ? 'smooth' : 'instant';
+			chatMessagesAreaRef.scrollTo({ top: chatMessagesAreaRef.scrollHeight, behavior });
 		}
-	};
+	}
+
+	function scrollToUserMessage() {
+		if (chatContainerRef) {
+			// Obtener la altura total del contenido
+			const scrollHeight = chatContainerRef.scrollHeight;
+			const clientHeight = chatContainerRef.clientHeight;
+
+			// Si hay scroll disponible, hacer scroll suave hacia el final
+			if (scrollHeight > clientHeight) {
+				chatContainerRef.scrollTo({
+					top: scrollHeight,
+					behavior: 'smooth'
+				});
+			}
+		}
+	}
 
 	const handleScroll = (event: Event) => {
 		const container = event.target as HTMLElement;
@@ -169,6 +213,28 @@
 	//HOOKS
 
 	onMount(async () => {
+		if (window.visualViewport) {
+			const handleResize = () => {
+				if (chatViewContainer) {
+					// 1. Redimensionamos el contenedor principal del chat
+					chatViewContainer.style.height = `${window.visualViewport.height}px`;
+					// 2. Forzamos el scroll al final para que el último mensaje sea visible
+					scrollToBottom(false); // false para que sea instantáneo
+				}
+			};
+
+			handleResize(); // Ejecutar una vez al inicio
+			window.visualViewport.addEventListener('resize', handleResize);
+
+			// Svelte 5 se encarga de la limpieza del listener
+			return () => window.visualViewport.removeEventListener('resize', handleResize);
+		}
+		if ($smartTrackerStore.id !== '0') {
+			redirect(`/stream/${$smartTrackerStore.id}`);
+		}
+		if ($page.url.pathname !== '/stream') {
+			startNewChat();
+		}
 		await getSessionsHistories();
 	});
 
@@ -186,7 +252,7 @@
 	});
 </script>
 
-<div class="font-claude-message h-screen w-full overflow-hidden bg-light-one dark:bg-dark-one">
+<div class="font-claude-message h-dvh w-full overflow-hidden bg-light-one dark:bg-dark-one">
 	<div class="relative flex h-full w-full">
 		<!-- Overlay sidebar -->
 		{#if !historyCollapsed}
@@ -209,7 +275,8 @@
 
 		<div class="relative flex h-full flex-1 overflow-hidden">
 			<!-- Chat Section -->
-			<div class="relative h-full flex-1 overflow-hidden">
+			<!-- <button onclick={() => redirect('/prueba')}>prueba2</button> -->
+			<div bind:this={chatViewContainer} class="relative h-full flex-1 overflow-hidden">
 				<div class="flex h-full w-full flex-col">
 					<!-- Header chat mobile -->
 					<div
@@ -223,14 +290,6 @@
 							<PencilIcon class="h-6 w-6" />
 						</button>
 						<div class="flex gap-3">
-							<!-- Artifact Button Mobile -->
-							<!-- <button
-								class="group flex items-center justify-center rounded-full p-1 text-light-two transition-colors duration-300 hover:bg-light-two_d dark:bg-dark-two dark:text-dark-one dark:hover:bg-dark-two_d"
-								onclick={toggleArtifact}
-								aria-label="Abrir artefacto"
-							>
-								<FilePencilIcon className="w-6 h-6" />
-							</button> -->
 							<ArtefactDropdown
 								bind:isOpen={dropdownOpen}
 								bind:currentArtifactType={typeArtefact}
@@ -258,7 +317,12 @@
 						</div>
 					</div>
 
-					<div class="flex-1 overflow-y-auto p-2 sm:p-3 md:p-6" onscroll={handleScroll}>
+					<div
+						bind:this={chatMessagesAreaRef}
+						class="flex-1 overflow-y-auto p-2 sm:p-3 md:p-6"
+						onscroll={handleScroll}
+					>
+						<!--*onScroll={handleScroll}*-->
 						<div class="mx-auto max-w-4xl space-y-6">
 							{#if $smartTrackerStore.events.length === 0}
 								<div class="flex flex-col items-center py-12 text-center md:py-20">
@@ -282,7 +346,7 @@
 							{#if isLoading}
 								<div class="flex items-start justify-start gap-1 sm:gap-3">
 									<div class="flex flex-shrink-0 items-center justify-center">
-										<BotsiIcon className="w-8 h-8" />
+										<BotsiIcon class="h-8 w-8" />
 									</div>
 
 									<div class="relative min-w-0">
@@ -303,7 +367,7 @@
 					</div>
 
 					<!-- Input Area -->
-					<div class="mb-12 w-full px-1 pb-2 md:px-6 lg:mb-0">
+					<div class="mx-auto w-full max-w-4xl px-1 pb-2 md:px-0">
 						<InputArea
 							{handleSendMessage}
 							{isLoading}
@@ -365,19 +429,6 @@ Línea 5: Conclusión"
 						onToggle={handleDropdownToggle}
 						id="dtp-artefact"
 					/>
-					<!-- <button
-						class="flex h-10 w-10 transform items-center justify-center rounded-full bg-light-two text-light-one shadow-xl transition-all duration-300 hover:scale-110 hover:bg-light-two_d hover:shadow-2xl dark:bg-dark-two dark:text-dark-one dark:hover:bg-dark-two_d"
-						onclick={toggleArtifact}
-						aria-label="Abrir artefacto"
-					>
-						{#if typeArtefact === 1}
-							<FilePencilIcon />
-						{:else if typeArtefact === 2}
-							<PhotoIcon />
-						{:else}
-							<span class="text-light-one dark:text-dark-one">MD</span>
-						{/if}
-					</button> -->
 				{/if}
 				<button
 					class="flex h-14 w-14 transform items-center justify-center rounded-full bg-light-two text-light-one shadow-xl transition-all duration-300 hover:scale-110 hover:bg-light-two_d hover:shadow-2xl dark:bg-dark-two dark:text-dark-one dark:hover:bg-dark-two_d"
@@ -399,38 +450,3 @@ Línea 5: Conclusión"
 		{/if}
 	</div>
 </div>
-
-<style>
-	@keyframes fade-in {
-		from {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.animate-fade-in {
-		animation: fade-in 0.3s ease-out;
-	}
-
-	/* Smooth scrollbar */
-	::-webkit-scrollbar {
-		width: 6px;
-	}
-
-	::-webkit-scrollbar-track {
-		background: transparent;
-	}
-
-	::-webkit-scrollbar-thumb {
-		background: rgba(148, 163, 184, 0.3);
-		border-radius: 3px;
-	}
-
-	::-webkit-scrollbar-thumb:hover {
-		background: rgba(148, 163, 184, 0.5);
-	}
-</style>

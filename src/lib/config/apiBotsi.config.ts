@@ -90,7 +90,7 @@ class ApiBotsi {
 				...(token && { Authorization: `Bearer ${token}` })
 			};
 
-			const response = await fetch(`${API_CONFIG.BASE_URL}${endpoint}`, {
+			const response = await fetch(`${API_CONFIG.BASE_URL}/api/v1${endpoint}`, {
 				method,
 				headers,
 				body: data ? JSON.stringify(data) : undefined,

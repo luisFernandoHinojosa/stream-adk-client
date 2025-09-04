@@ -53,7 +53,7 @@ class AuthService {
 				},
 				body: formData
 			});
-
+			console.log('response', response);
 			const data = await response.json();
 
 			if (!response.ok) {
@@ -62,7 +62,7 @@ class AuthService {
 					`Error ${response.status}: ${error.error} - ${error.error_description || 'Authentication failed'}`
 				);
 			}
-
+			console.log('data login', data);
 			return data as AuthResponse;
 		} catch (error) {
 			if (error instanceof Error) {

@@ -47,3 +47,5 @@ export { default as BrainIcon } from './brainIcon.svelte';
 export { default as ZoomIcon } from './zoomIcon.svelte';
 export { default as LoaderIcon } from './loaderIcon.svelte';
 export { default as ChevronDownIcon } from './chevronDownIcon.svelte';
+export { default as CharBarIcon } from './charBarIcon.svelte';
+export { default as KeyIcon } from './keyIcon.svelte';

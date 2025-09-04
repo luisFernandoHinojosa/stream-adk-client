@@ -38,7 +38,7 @@
 			<div class="flex w-full items-center justify-between p-4">
 				<div class="flex items-center">
 					<div class="flex items-center justify-center">
-						<BotsiIcon className="w-9 h-9" />
+						<BotsiIcon class="h-9 w-9" />
 					</div>
 				</div>
 				<div class="flex items-center gap-2">
@@ -117,7 +117,7 @@
 					<div
 						class="absolute inset-0 flex items-center justify-center transition-opacity duration-300 group-hover:opacity-0"
 					>
-						<BotsiIcon className="w-9 h-9" />
+						<BotsiIcon class="h-9 w-9" />
 					</div>
 					<button
 						onclick={toggleHistorySidebar}

@@ -8,7 +8,7 @@
 		toggleArtifact: () => void;
 		fileContent?: string;
 		fileName?: string;
-		fileType?: 'markdown' | 'txt' | 'doc' | 'png' | 'pdf' | 'image' | 'csv';
+		fileType?: 'markdown' | 'txt' | 'doc' | 'png' | 'pdf' | 'image' | 'csv' | 'html';
 		fileUrl?: string; // Para imágenes, PDFs o archivos binarios
 	}
 
@@ -371,17 +371,12 @@ Este es el párrafo final del documento. ¡Pruebas completadas!
 					</div>
 				{/if}
 			</div>
-		{:else if fileType === 'pdf'}
+		{:else if fileType === 'pdf' || fileType === 'html'}
 			<!-- Renderizado de PDF -->
 			<div class="flex h-full flex-col">
 				{#if fileUrl}
 					<div class="min-h-0 flex-1">
 						<iframe src={fileUrl} class="h-full w-full border-0" title={fileName}></iframe>
-					</div>
-					<div
-						class="bg-light-two_d px-4 py-2 text-xs text-light-three dark:bg-dark-two_d dark:text-dark-three"
-					>
-						<a href={fileUrl} target="_blank" class="underline">nueva ventana </a>
 					</div>
 				{:else}
 					<div

@@ -6,7 +6,9 @@ import type {
 	SessionData,
 	SessionsHistory
 } from '$lib/interface';
+import { authStore } from '$lib/stores';
 import { getIdToken } from '$lib/utils/getIdToken';
+import { get } from 'svelte/store';
 
 class SmartTrackerService {
 	async createSession(): Promise<CreateSessionResponse> {
@@ -22,15 +24,16 @@ class SmartTrackerService {
 	}
 
 	async chatStreamSend(payload: ChatStreamSend): Promise<ChatStreamResponse> {
-		const token =
-			'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJsdWlzNDQxIiwidXNlcl9pZCI6IjNhYzQ4NTZjLWVlNzktNGM4MS04Y2JlLTdkOGNjMzllOWQzMSIsImVtYWlsIjoibHVpczQ0MWZlcnJpdmVyYUBnbWFpbC5jb29tIiwiZXhwIjoxNzU0MzY1OTIzfQ.6_p60jO6yNHCK5wqt_Jmjwj49ifioEd05xAICJYRQLE';
-		console.log('payload', payload);
+		const token = get(authStore).access_token;
+		if (!token) {
+			throw new Error('No se encontro token de autenticacion');
+		}
 
 		const queryParams = new URLSearchParams({
 			message: payload.message
 		});
 
-		const apiURL = 'http://localhost:8000/api/v1';
+		const apiURL = 'http://192.168.1.3:8080/api/v1';
 		const endpoint = `${apiURL}/chat_sse/chat/stream/${payload.session_id}?${queryParams.toString()}`;
 
 		// Arrays para acumular los datos

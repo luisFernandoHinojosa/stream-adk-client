@@ -71,6 +71,16 @@
 				{ id: 'csv1', name: 'datos.csv', description: 'Base de datos principal' },
 				{ id: 'csv2', name: 'usuarios.csv', description: 'Lista de usuarios' }
 			]
+		},
+		{
+			id: 6,
+			name: 'Html',
+			description: 'Documentos con formato HTML',
+			icon: FilePencilIcon,
+			children: [
+				{ id: 'html1', name: 'datos.html', description: 'Base de datos principal' },
+				{ id: 'html2', name: 'usuarios.html', description: 'Lista de usuarios' }
+			]
 		}
 	];
 
@@ -112,7 +122,7 @@
 <div class="relative flex items-center justify-center">
 	<!-- Botón principal -->
 	<button
-		class="group flex transform items-center justify-center rounded-full bg-light-two p-2 text-light-one shadow-xl transition-all duration-300 hover:scale-110 hover:bg-light-two_d hover:shadow-2xl focus:ring-2 focus:ring-light-three focus:ring-offset-2 focus:outline-none md:p-1 dark:bg-dark-two dark:text-dark-one dark:hover:bg-dark-two_d dark:focus:ring-offset-dark-one"
+		class="group flex transform items-center justify-center rounded-full bg-light-two p-1 text-light-one shadow-xl transition-all duration-300 hover:scale-110 hover:bg-light-two_d hover:shadow-2xl focus:ring-2 focus:ring-light-three focus:ring-offset-2 focus:outline-none lg:h-14 lg:w-14 dark:bg-dark-two dark:text-dark-one dark:hover:bg-dark-two_d dark:focus:ring-offset-dark-one"
 		on:click={toggleDropdown}
 		aria-label="Seleccionar tipo de artefacto"
 		aria-expanded={isOpen}
@@ -120,7 +130,7 @@
 	>
 		<svelte:component
 			this={currentType.icon}
-			class="h-7 w-7 transition-transform duration-200 md:h-6 md:w-6 {isOpen ? 'rotate-12' : ''}"
+			class="h-6 w-6 transition-transform duration-200 lg:h-10 lg:w-10 {isOpen ? 'rotate-12' : ''}"
 		/>
 	</button>
 

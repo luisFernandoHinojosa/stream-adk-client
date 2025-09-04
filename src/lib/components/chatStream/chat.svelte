@@ -80,7 +80,7 @@
 	}
 </script>
 
-<div class="flex flex-col gap-6 text-light-two">
+<div class="flex flex-col gap-6 pt-4 text-light-two">
 	{#each sessionsData?.events as event (event.id)}
 		{@const { textParts, functionParts } = processEventParts(event?.content?.parts || [])}
 		{#each textParts as part}
@@ -89,7 +89,7 @@
 			<div class="flex items-start gap-1 sm:gap-3 {isUserPart ? 'justify-end' : 'justify-start'}">
 				{#if !isUserPart}
 					<div class="hidden flex-shrink-0 items-center justify-center sm:flex">
-						<BotsiIcon className="w-8 h-8" />
+						<BotsiIcon class="h-8 w-8" />
 					</div>
 				{/if}
 
@@ -122,37 +122,26 @@
 								</div>
 							{:else}
 								<div>
-									<div class="text-base sm:text-lg">
-										{part.text}
-									</div>
-									<!-- <MarkdownRenderer markdownText={part.text} /> -->
+									<MarkdownRenderer markdownText={part.text} />
 								</div>
 							{/if}
 						</div>
 					</div>
 				</div>
-
 				{#if isUserPart}
 					<div class="hidden flex-shrink-0 items-center justify-center sm:flex">
 						<div class="h-8 w-8 overflow-hidden rounded-full">
-							<img
-								src="/images/avatars/panda.webp"
-								alt="User Avatar"
-								class="h-full w-full object-cover"
-							/>
+							<img src="/images/panda.webp" alt="User Avatar" class="h-full w-full object-cover" />
 						</div>
 					</div>
 				{/if}
 			</div>
 		{/each}
-
-		<!-- -->
 		{#if shouldShowAccordion(event, sessionsData?.events || [])}
 			{@const functionPair = getFunctionPair(event, sessionsData?.events || [])}
-
 			<div class="flex items-start justify-start gap-1 sm:gap-3">
 				<div class="hidden flex-shrink-0 items-center justify-center sm:flex">
-					<BotsiIcon className="w-8 h-8" />
+					<BotsiIcon class="h-8 w-8" />
 				</div>
 				<div class="relative min-w-0 flex-grow">
 					<Accordion title="Procesos" type="function">
@@ -161,12 +150,9 @@
 								{#if 'functionCall' in part}
 									{@const nextPart = functionPair[index + 1]}
 									{@const isResponseNext = nextPart && 'functionResponse' in nextPart}
-
-									<!-- Contenedor de la pareja funcion -->
 									<div
 										class="overflow-hidden rounded-lg border border-light-one bg-light-one dark:border-dark-one dark:bg-light-one"
 									>
-										<!-- Título de la funcion -->
 										<div class="border-b border-light-one px-4 py-2 dark:border-dark-one">
 											<h4
 												class="flex items-center text-lg font-bold text-light-two dark:text-dark-two"
@@ -174,12 +160,8 @@
 												{part.functionCall.name}
 											</h4>
 										</div>
-
-										<!-- Contenido de la función -->
 										<div class="space-y-4 px-4">
-											<!-- Function Call -->
 											<div>
-												<!-- <div class="flex items-center mb-2"> -->
 												<span
 													class="text-xs font-medium tracking-wide text-light-two uppercase dark:text-dark-two"
 												>
@@ -191,8 +173,6 @@
 														>{formatCodeContent(part)}</code
 													></pre>
 											</div>
-
-											<!-- Function Response (si existe) -->
 											{#if isResponseNext}
 												<div>
 													<div class="flex items-center gap-2">
@@ -217,37 +197,5 @@
 				</div>
 			</div>
 		{/if}
-		<!-- {#if shouldShowAccordion(event, sessionsData?.events || [])}
-			{@const functionPair = getFunctionPair(event, sessionsData?.events || [])}
-
-			<div class="flex items-start gap-1 sm:gap-3 justify-start">
-				<div class="hidden sm:flex items-center justify-center flex-shrink-0">
-					<BotsiIcon className="w-8 h-8" />
-				</div>
-				<div class="min-w-0 flex-grow relative">
-					<Accordion title="Procesos" type="function">
-						<div class="space-y-6">
-							{#each functionPair as part}
-								{#if 'functionCall' in part}
-									<div>
-										<pre
-											class="text-xs text-light-one dark:text-dark-one overflow-x-auto p-3 rounded border border-light-one dark:border-dark-one"><code
-												>{formatCodeContent(part)}</code
-											></pre>
-									</div>
-								{:else if 'functionResponse' in part}
-									<div>
-										<pre
-											class="text-xs text-light-one dark:text-dark-one overflow-x-auto p-3 rounded border border-light-one dark:border-dark-one"><code
-												>{formatCodeContent(part)}</code
-											></pre>
-									</div>
-								{/if}
-							{/each}
-						</div>
-					</Accordion>
-				</div>
-			</div>
-		{/if} -->
 	{/each}
 </div>
