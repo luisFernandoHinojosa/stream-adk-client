@@ -5,6 +5,7 @@
 	import ChevronRightIcon from '$lib/icons/outline/chevronRightIcon.svelte';
 	import SettingsIcon from '$lib/icons/outline/settingsIcon.svelte';
 	import { LogoutIcon, MoonIcon, SunIcon } from '$lib/icons/solid';
+	import { smartTrackerStore } from '$lib/stores/smartTrackerStore';
 	import { themeStore } from '$lib/stores/themeStore';
 	import { userStore } from '$lib/stores/userStore';
 	import { redirect } from '$lib/utils/redirect';
@@ -28,6 +29,7 @@
 	}
 
 	const onLogout = () => {
+		smartTrackerStore.reset();
 		goto('/auth/sign-in');
 	};
 

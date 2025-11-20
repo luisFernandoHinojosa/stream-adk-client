@@ -6,7 +6,7 @@
 	import { Permission } from '$lib/config/permissions';
 	let showHeader: boolean = $state(true);
 	$effect(() => {
-		showHeader = $page.url.pathname !== '/settings';
+		showHeader = $page.url.pathname !== '/settings' && !$page.url.pathname.includes('chat-details');
 	});
 </script>
 

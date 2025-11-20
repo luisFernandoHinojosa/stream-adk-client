@@ -17,6 +17,7 @@ export enum Permission {
 	VIEW_AGENTS = 'view_agents',
 	VIEW_API_KEYS = 'view_api_keys',
 	VIEW_SYSTEM_PROMPTS = 'view_system_prompts',
+	VIEW_CHAT_DETAILS = 'view_chat_details',
 
 	// Stream access
 	VIEW_STREAM = 'view_stream'
@@ -44,7 +45,8 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
 		Permission.VIEW_STATISTICS,
 		Permission.VIEW_AGENTS,
 		Permission.VIEW_API_KEYS,
-		Permission.VIEW_SYSTEM_PROMPTS
+		Permission.VIEW_SYSTEM_PROMPTS,
+		Permission.VIEW_CHAT_DETAILS
 	],
 	[Role.VIEWER]: [Permission.VIEW_STREAM],
 	[Role.MASTER]: [
@@ -57,7 +59,8 @@ export const ROLE_PERMISSIONS: Record<Role, Permission[]> = {
 		Permission.VIEW_STATISTICS,
 		Permission.VIEW_AGENTS,
 		Permission.VIEW_API_KEYS,
-		Permission.VIEW_SYSTEM_PROMPTS
+		Permission.VIEW_SYSTEM_PROMPTS,
+		Permission.VIEW_CHAT_DETAILS
 	]
 };
 
@@ -70,5 +73,6 @@ export const ROUTE_PERMISSIONS: Record<string, Permission[]> = {
 	'/settings/agents': [Permission.VIEW_AGENTS],
 	'/settings/api-keys': [Permission.VIEW_API_KEYS],
 	'/settings/system-prompts': [Permission.VIEW_SYSTEM_PROMPTS],
-	'/settings/users': [Permission.VIEW_USERS]
+	'/settings/users': [Permission.VIEW_USERS],
+	'/settings/users/:userId/chat-details': [Permission.VIEW_CHAT_DETAILS]
 };

@@ -1,11 +1,13 @@
 <script lang="ts">
 	import { LayoutGridIcon } from '$lib/icons/solid';
+	import type { Aplication } from '$lib/interface';
+	import { aplicationStore } from '$lib/stores';
 
-	const apps = [
-		{ id: '1', name: 'Botsi' },
-		{ id: '2', name: 'Vizta' },
-		{ id: '3', name: 'Softia' },
-		{ id: '4', name: 'Nuevo' }
+	const apps: Aplication[] = [
+		{ aplication_id: 1, aplication_name: 'Botsi' },
+		{ aplication_id: 2, aplication_name: 'Vizta' },
+		{ aplication_id: 3, aplication_name: 'Softia' },
+		{ aplication_id: 4, aplication_name: 'Nuevo' }
 	];
 
 	interface Props {
@@ -15,20 +17,21 @@
 	let { collapsed = false }: Props = $props();
 	let isOpen = $state(false);
 	let dropdownRef: HTMLDivElement;
-	let selectedAppId = $state('1');
 
-	const onAppChange = (appId: string) => {
-		selectedAppId = appId;
+	const onAppChange = (app: Aplication) => {
+		aplicationStore.set(app);
 	};
 
-	const selectedApp = $derived(apps.find((app) => app.id === selectedAppId));
+	const selectedApp = $derived(
+		apps.find((app) => app.aplication_id === $aplicationStore.aplication_id)
+	);
 
 	function toggleDropdown() {
 		isOpen = !isOpen;
 	}
 
-	function selectApp(appId: string) {
-		onAppChange(appId);
+	function selectApp(app: Aplication) {
+		onAppChange(app);
 		isOpen = false;
 	}
 
@@ -67,14 +70,14 @@
 			<div class="py-1">
 				{#each apps as app}
 					<button
-						onclick={() => selectApp(app.id)}
-						class="flex w-full items-center px-3 py-2 text-sm transition-colors duration-150 {selectedAppId ===
-						app.id
+						onclick={() => selectApp(app)}
+						class="flex w-full items-center px-3 py-2 text-sm transition-colors duration-150 {selectedApp?.aplication_id ===
+						app.aplication_id
 							? 'bg-light-two text-light-one dark:bg-dark-two dark:text-dark-one'
 							: 'text-light-two hover:bg-light-two_d hover:text-light-one dark:text-dark-two dark:hover:bg-dark-two_d'}"
 					>
-						<span class="truncate">{app.name}</span>
-						{#if selectedAppId === app.id}
+						<span class="truncate">{app.aplication_name}</span>
+						{#if selectedApp?.aplication_id === app.aplication_id}
 							<div class="ml-auto h-2 w-2 rounded-full bg-current"></div>
 						{/if}
 					</button>

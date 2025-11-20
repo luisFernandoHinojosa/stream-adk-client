@@ -3,6 +3,7 @@
 	import { smartTrackerStore } from '$lib/stores/smartTrackerStore';
 	import XmarkIcon from '$lib/icons/outline/xmarkIcon.svelte';
 	import MarkdownRenderer from './MarkdownRenderer.svelte';
+	import { HTML_BASE64, IMG_BASE64, TXT_BASE64 } from '$lib/constants/datasBase64';
 
 	interface Props {
 		toggleArtifact: () => void;
@@ -208,6 +209,12 @@ Este es el párrafo final del documento. ¡Pruebas completadas!
 23,"Mariela Ximena","Cortez Alvarez","mariela.cortez@empresa.com","Recursos Humanos","Coordinadora de Nóminas",53000,"2020-08-03",31,"555-0145","Villa Olímpica 852","Santa Cruz","Santa Cruz","8023","Femenino","Divorciada",7,"Licenciatura","Certified Payroll Professional","Español, Inglés",4.6,40,"Presencial",1,"2023-08-01","Seguro médico, Horario flexible","Sí","Sí",21,"Nómina 500+ empleados, Sistema RRHH"
 24,"Joaquín Raúl","Espinoza Choque","joaquin.espinoza@empresa.com","Operaciones","Técnico de Mantenimiento",41000,"2021-07-19",34,"555-0146","Zona Plan 3000","Santa Cruz","Santa Cruz","8024","Masculino","Casado",8,"Técnico","Electricidad industrial, PLC","Español, Quechua",4.3,44,"Presencial",18,"2024-07-01","Seguro familiar, Capacitación técnica","Sí","Sí",18,"Mantenimiento preventivo, Equipos nuevos"
 25,"Brenda Carolina","Varela Suárez","brenda.varela@empresa.com","Legal","Coordinadora Compliance","72000","2021-02-22",33,"555-0147","Condominio Las Torres","Santa Cruz","Santa Cruz","8025","Femenino","Casada",6,"Maestría","Certified Compliance Officer","Español, Inglés, Portugués",4.7,40,"Híbrido",7,"2024-02-01","Seguro completo, Capacitación legal","Sí","Sí",20,"Políticas internas, Auditoría compliance`;
+
+	let textBase64: string = TXT_BASE64;
+	let base64Content = TXT_BASE64.split(',')[1];
+
+	// decodifica base64 a texto
+	let decodedText = atob(base64Content);
 </script>
 
 <div
@@ -243,7 +250,7 @@ Este es el párrafo final del documento. ¡Pruebas completadas!
 				<div class="rounded-lg bg-light-one p-4 dark:bg-dark-one">
 					<pre
 						class="overflow-x-auto font-mono text-sm leading-relaxed whitespace-pre-wrap text-light-two dark:text-dark-two">
-{contentToShow}
+{decodedText}
 					</pre>
 				</div>
 			</div>

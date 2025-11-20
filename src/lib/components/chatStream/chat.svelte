@@ -1,7 +1,6 @@
 <script lang="ts">
 	//chat.svelte
 	import Accordion from './accordion.svelte';
-
 	import MarkdownRenderer from './MarkdownRenderer.svelte';
 	import type { SessionData } from '$lib/interface';
 	import { BotsiIcon } from '$lib/icons/solid';
@@ -78,6 +77,7 @@
 
 		return pair;
 	}
+	console.log('sessionsData', sessionsData);
 </script>
 
 <div class="flex flex-col gap-6 pt-4 text-light-two">
@@ -87,7 +87,7 @@
 			{@const isUserPart = event?.content?.role === 'user'}
 
 			<div class="flex items-start gap-1 sm:gap-3 {isUserPart ? 'justify-end' : 'justify-start'}">
-				{#if !isUserPart}
+				{#if !isUserPart && part.text.trim() !== ''}
 					<div class="hidden flex-shrink-0 items-center justify-center sm:flex">
 						<BotsiIcon class="h-8 w-8" />
 					</div>
@@ -117,10 +117,10 @@
 								: 'text-light-two dark:text-dark-two'}"
 						>
 							{#if isUserPart}
-								<div class="text-base sm:text-lg">
+								<div class="text-base md:text-lg">
 									{part.text}
 								</div>
-							{:else}
+							{:else if part.text && part.text.trim() !== ''}
 								<div>
 									<MarkdownRenderer markdownText={part.text} />
 								</div>
@@ -137,7 +137,7 @@
 				{/if}
 			</div>
 		{/each}
-		{#if shouldShowAccordion(event, sessionsData?.events || [])}
+		<!-- {#if shouldShowAccordion(event, sessionsData?.events || [])}
 			{@const functionPair = getFunctionPair(event, sessionsData?.events || [])}
 			<div class="flex items-start justify-start gap-1 sm:gap-3">
 				<div class="hidden flex-shrink-0 items-center justify-center sm:flex">
@@ -167,7 +167,7 @@
 												>
 													<ArrowNarrowRightIcon />
 												</span>
-												<!-- </div> -->
+												
 												<pre
 													class="overflow-x-auto rounded bg-light-two p-3 text-xs text-light-one dark:bg-dark-two dark:text-dark-one"><code
 														>{formatCodeContent(part)}</code
@@ -196,6 +196,6 @@
 					</Accordion>
 				</div>
 			</div>
-		{/if}
+		{/if} -->
 	{/each}
 </div>

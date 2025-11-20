@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { goto } from '$app/navigation';
+	import { page } from '$app/state';
 	import Artefact from '$lib/components/chatStream/artefact.svelte';
 	import ArtefactDropdown from '$lib/components/chatStream/artefactDropdown.svelte';
 	import Chat from '$lib/components/chatStream/chat.svelte';
@@ -7,19 +9,24 @@
 	import ModalChatState from '$lib/components/chatStream/modalChatState.svelte';
 	import SidebarHistory from '$lib/components/chatStream/sidebarHistory.svelte';
 	import Loader from '$lib/components/ui/loader.svelte';
+	import { HTML_BASE64, IMG_BASE64, PDF_BASE64, TXT_BASE64 } from '$lib/constants/datasBase64';
 	import { BrainIcon, LoaderIcon, PencilIcon } from '$lib/icons/outline';
 	import Menu2Icon from '$lib/icons/outline/menu2Icon.svelte';
 	import PhotoIcon from '$lib/icons/outline/photoIcon.svelte';
 	import { BotsiIcon } from '$lib/icons/solid';
 	import FilePencilIcon from '$lib/icons/solid/filePencilIcon.svelte';
-	import type { ChatStreamSend, SessionsHistory } from '$lib/interface';
+	import type {
+		ChatStreamSend,
+		ChatV2SendPayload,
+		ChatV2StreamCallbacks,
+		ChatV2StreamEvent,
+		SessionsHistory
+	} from '$lib/interface';
 	import { smartTrackerService } from '$lib/services/smartTracker.service';
+	import { aplicationStore, streamingStore } from '$lib/stores';
 	import { smartTrackerStore } from '$lib/stores/smartTrackerStore';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-	import { page } from '$app/stores';
-	import { redirect } from '$lib/utils/redirect';
-	import AppSelector2 from '$lib/components/chatStream/appSelector2.svelte';
 
 	//VARIABLES STATES
 	let isLoading: boolean = $state(false);
@@ -34,13 +41,15 @@
 	let isLoadingSessionChat: boolean = $state(false);
 	let typeArtefact: number = $state(2);
 	let dropdownOpen: boolean = $state(false);
+	let streamingEnabled: boolean = $state($streamingStore);
 
-	const sessionId = $page.params.sessionId;
+	let chatContainerRef: HTMLDivElement;
 
 	let chatViewContainer: HTMLDivElement | null = $state(null);
 	// Este es el área que contiene los mensajes y que hará scroll.
 	let chatMessagesAreaRef: HTMLDivElement | null = $state(null);
-	//console.log('sessionId', sessionId);
+
+	let data = $props();
 
 	//FUNCTIONS
 
@@ -48,6 +57,9 @@
 		try {
 			smartTrackerStore.addUserEvent(userMessage);
 			isLoading = true;
+			setTimeout(() => {
+				scrollToUserMessage();
+			}, 50);
 			// setTimeout(() => scrollToBottom(true), 100);
 			//solo si el id es 0 creamos una sesion
 			if ($smartTrackerStore.id === '0') {
@@ -84,6 +96,117 @@
 		setTimeout(() => scrollToBottom(true), 100);
 	};
 
+	const handleSendMessageV2 = async (
+		userMessage: string,
+		enableStreaming: boolean = true
+	): Promise<void> => {
+		try {
+			// Agregar mensaje del usuario
+			smartTrackerStore.addUserEvent(userMessage);
+			isLoading = true;
+
+			setTimeout(() => {
+				scrollToUserMessage();
+			}, 50);
+
+			// Crear sesión si es necesaria
+			if ($smartTrackerStore.id === '0') {
+				console.log('creando sesion');
+				const newSession = await createNewSession();
+				goto(`/stream/${$smartTrackerStore.id}`);
+				// Actualizar el ID de la sesión en el store si es necesario
+			}
+
+			const payload: ChatV2SendPayload = {
+				message: userMessage,
+				streaming: enableStreaming,
+				state_delta: { additionalProp1: {} }
+			};
+
+			// Agregar mensaje vacío del bot que se irá actualizando
+			smartTrackerStore.addModelEvent('');
+			console.log('smartTrackerStore despues de event', $smartTrackerStore);
+
+			let accumulatedText = '';
+			let hasError = false;
+
+			// Configurar callbacks para streaming
+			const streamCallbacks: ChatV2StreamCallbacks = {
+				onTextChunk: (text: string, isPartial: boolean, eventData: ChatV2StreamEvent) => {
+					if (isPartial) {
+						// Texto parcial: concatenar al texto acumulado
+						accumulatedText += text;
+					} else {
+						// Texto final: usar el texto completo que viene del servidor
+						setTimeout(() => (accumulatedText = text), 10);
+					}
+
+					// Actualizar el último evento (mensaje del bot) con el texto acumulado
+					smartTrackerStore.updateLastEvent((event) => ({
+						...event,
+						content: {
+							...event.content,
+							parts: [{ text: accumulatedText }]
+						}
+					}));
+
+					// Auto-scroll durante el streaming
+					setTimeout(() => scrollToBottom(false), 10);
+				},
+
+				onFunctionCall: (functionCall: any, eventData: ChatV2StreamEvent) => {
+					console.log('Function call recibido:', functionCall);
+					// Agregar como un evento separado
+					smartTrackerStore.addFunctionCallEvent([{ functionCall }]);
+					setTimeout(() => scrollToBottom(false), 10);
+				},
+
+				onFunctionResponse: (functionResponse: any, eventData: ChatV2StreamEvent) => {
+					console.log('Function response recibido:', functionResponse);
+					// Agregar como un evento separado
+					smartTrackerStore.addFunctionResponseEvent([{ functionResponse }]);
+					setTimeout(() => scrollToBottom(false), 10);
+				},
+
+				onComplete: (finalEvent: ChatV2StreamEvent) => {
+					console.log('Streaming completado:', finalEvent);
+					isLoading = false;
+					setTimeout(() => scrollToBottom(true), 100);
+				},
+
+				onError: (error: Error) => {
+					console.error('Error en streaming:', error);
+					hasError = true;
+					isLoading = false;
+				}
+			};
+
+			// Ejecutar el servicio (funciona tanto para streaming como no-streaming)
+			await smartTrackerService.chatStreamSendV2($smartTrackerStore.id, payload, streamCallbacks);
+
+			if (hasError) {
+				throw new Error('Error en el streaming');
+			}
+		} catch (error) {
+			console.error('Error al enviar mensaje:', error);
+			// Remover el último mensaje del usuario y el mensaje vacío del bot
+			smartTrackerStore.removeLastEvent(); // Remover mensaje vacío del bot
+			smartTrackerStore.removeLastEvent(); // Remover mensaje del usuario
+			isLoading = false;
+		} finally {
+			isLoading = false;
+		}
+	};
+
+	const handleSendMessageStreaming = async (userMessage: string): Promise<void> => {
+		return handleSendMessageV2(userMessage, true);
+	};
+
+	// Función de conveniencia para enviar sin streaming
+	const handleSendMessageNoStreaming = async (userMessage: string): Promise<void> => {
+		return handleSendMessageV2(userMessage, false);
+	};
+
 	const toggleHistorySidebar = () => {
 		historyCollapsed = !historyCollapsed;
 	};
@@ -106,7 +229,7 @@
 			//console.log('sessionId', sessionId);
 			const sessionResponse = await smartTrackerService.getSession(sessionId);
 			smartTrackerStore.set(sessionResponse);
-			redirect(`/stream/${sessionResponse.id}`, true);
+			//	redirect(`/stream/${sessionResponse.id}`, true);
 			//console.log('sessionResponse', sessionResponse);
 		} catch (error) {
 			isLoadingSessionChat = false;
@@ -118,10 +241,11 @@
 	const createNewSession = async (): Promise<void> => {
 		try {
 			const sessionResponse = await smartTrackerService.createSession();
-			redirect(`/stream/${sessionResponse.session_id}`, true);
+			console.log('sessionResponse ...............', sessionResponse);
+			//	redirect(`/stream/${sessionResponse.session_id}`, true);
 			//console.log('sessionResponse', sessionResponse);
 			$smartTrackerStore.id = sessionResponse.session_id;
-			//await getSessionsHistories();
+			await getSessionsHistories();
 		} catch (error) {
 			console.log(error);
 		}
@@ -141,13 +265,14 @@
 		}
 		stateSessionMinimized = !stateSessionMinimized;
 	}
+
 	function toggleArtifact() {
 		artifactOpen = !artifactOpen;
 	}
 
 	const startNewChat = () => {
 		smartTrackerStore.reset();
-		redirect(`/stream`, true);
+		//	redirect(`/stream`, true);
 		shouldAutoScroll = true;
 	};
 
@@ -170,6 +295,22 @@
 		}
 	}
 
+	function scrollToUserMessage() {
+		if (chatContainerRef) {
+			// Obtener la altura total del contenido
+			const scrollHeight = chatContainerRef.scrollHeight;
+			const clientHeight = chatContainerRef.clientHeight;
+
+			// Si hay scroll disponible, hacer scroll suave hacia el final
+			if (scrollHeight > clientHeight) {
+				chatContainerRef.scrollTo({
+					top: scrollHeight,
+					behavior: 'smooth'
+				});
+			}
+		}
+	}
+
 	const handleScroll = (event: Event) => {
 		const container = event.target as HTMLElement;
 		const { scrollTop, scrollHeight, clientHeight } = container;
@@ -188,45 +329,55 @@
 		dropdownOpen = false;
 	}
 
-	function scrollToUserMessage() {
-		if (chatContainerRef) {
-			// Obtener la altura total del contenido
-			const scrollHeight = chatContainerRef.scrollHeight;
-			const clientHeight = chatContainerRef.clientHeight;
-
-			// Si hay scroll disponible, hacer scroll suave hacia el final
-			if (scrollHeight > clientHeight) {
-				chatContainerRef.scrollTo({
-					top: scrollHeight,
-					behavior: 'smooth'
-				});
-			}
-		}
-	}
-
 	function handleDropdownToggle(isOpen: boolean) {
 		dropdownOpen = isOpen;
 	}
+
+	const onStreamingToggle = (enabled: boolean) => {
+		streamingStore.set(enabled);
+	};
 	//HOOKS
 
+	// onMount(async () => {
+	// 	if (window.visualViewport) {
+	// 		const handleResize = () => {
+	// 			if (chatViewContainer) {
+	// 				// 1. Redimensionamos el contenedor principal del chat
+	// 				chatViewContainer.style.height = `${window.visualViewport.height}px`;
+	// 				// 2. Forzamos el scroll al final para que el último mensaje sea visible
+	// 				scrollToBottom(false); // false para que sea instantáneo
+	// 			}
+	// 		};
+
+	// 		handleResize(); // Ejecutar una vez al inicio
+	// 		window.visualViewport.addEventListener('resize', handleResize);
+
+	// 		// Svelte 5 se encarga de la limpieza del listener
+	// 		return () => window.visualViewport.removeEventListener('resize', handleResize);
+	// 	}
+	// 	if ($smartTrackerStore.id !== '0') {
+	// 		redirect(`/stream/${$smartTrackerStore.id}`);
+	// 	}
+	// 	if ($page.url.pathname !== '/stream') {
+	// 		startNewChat();
+	// 	}
+	// 	await getSessionsHistories();
+	// });
 	onMount(() => {
-		if (window.visualViewport) {
-			const handleResize = () => {
-				if (chatViewContainer) {
-					// 1. Redimensionamos el contenedor principal del chat
-					chatViewContainer.style.height = `${window.visualViewport.height}px`;
-					// 2. Forzamos el scroll al final para que el último mensaje sea visible
-					scrollToBottom(false); // false para que sea instantáneo
-				}
-			};
+		console.log('entreee');
+		(async () => {
+			// console.log('entree22esssssssss');
+			// if ($smartTrackerStore.id !== '0') {
+			// 	redirect(`/stream/${$smartTrackerStore.id}`);
+			// }
+			// if (page.url.pathname !== '/stream') {
+			// 	startNewChat();
+			// }
+			console.log('entree22e');
+			await getSessionsHistories();
+		})();
 
-			handleResize(); // Ejecutar una vez al inicio
-			window.visualViewport.addEventListener('resize', handleResize);
-
-			// Svelte 5 se encarga de la limpieza del listener
-			return () => window.visualViewport.removeEventListener('resize', handleResize);
-		}
-		//await getSessionsHistories();
+		// No retornamos nada aquí, el único return está dentro del if del visualViewport.
 	});
 
 	$effect(() => {
@@ -241,9 +392,20 @@
 			setTimeout(() => scrollToBottom(true), 100);
 		}
 	});
+
+	$effect(() => {
+		if (data.session) {
+			console.log('data.session', data.session);
+			// Si `load` nos dio una sesión, la establecemos en el store.
+			smartTrackerStore.set(data.session);
+		} else {
+			// Si no, reseteamos el store para empezar un chat nuevo y limpio.
+			smartTrackerStore.reset();
+		}
+	});
 </script>
 
-<div class="font-claude-message h-screen w-full overflow-hidden bg-light-one dark:bg-dark-one">
+<div class="font-claude-message h-dvh w-full overflow-hidden bg-light-one dark:bg-dark-one">
 	<div class="relative flex h-full w-full">
 		<!-- Overlay sidebar -->
 		{#if !historyCollapsed}
@@ -266,6 +428,7 @@
 
 		<div class="relative flex h-full flex-1 overflow-hidden">
 			<!-- Chat Section -->
+			<!-- <button onclick={() => redirect('/prueba')}>prueba2</button> -->
 			<div bind:this={chatViewContainer} class="relative h-full flex-1 overflow-hidden">
 				<div class="flex h-full w-full flex-col">
 					<!-- Header chat mobile -->
@@ -279,7 +442,7 @@
 						>
 							<PencilIcon class="h-6 w-6" />
 						</button>
-						<div class="flex items-center justify-center gap-3">
+						<div class="flex gap-3">
 							<ArtefactDropdown
 								bind:isOpen={dropdownOpen}
 								bind:currentArtifactType={typeArtefact}
@@ -309,14 +472,20 @@
 
 					<div
 						bind:this={chatMessagesAreaRef}
-						class="mt-6 flex-1 overflow-y-auto p-2 sm:p-3 md:p-6"
+						class="flex-1 overflow-y-auto p-2 sm:p-3 md:p-6"
 						onscroll={handleScroll}
 					>
+						<!--*onScroll={handleScroll}*-->
 						<div class="mx-auto max-w-4xl space-y-6">
 							{#if $smartTrackerStore.events.length === 0}
 								<div class="flex flex-col items-center py-12 text-center md:py-20">
-									<h3 class="mb-3 text-xl font-bold text-light-two md:text-2xl dark:text-dark-two">
-										¡Hola! ¿En qué puedo ayudarte?
+									<h3
+										class="mb-3 text-xl font-semibold text-light-two md:text-2xl dark:text-dark-two"
+									>
+										¡Hola!, soy tu agente <span
+											class="text-4xl font-bold text-light-two dark:text-dark-two"
+											>{$aplicationStore.aplication_name}</span
+										> ¿En qué puedo ayudarte?
 									</h3>
 									<p class="max-w-md text-base text-light-two md:text-lg dark:text-dark-two">
 										Escribe tu mensaje para comenzar una conversación
@@ -356,12 +525,14 @@
 					</div>
 
 					<!-- Input Area -->
-					<div class="mx-auto mb-auto w-full max-w-4xl px-1 md:px-6">
+					<div class="mx-auto mb-0 w-full max-w-4xl md:mb-2 md:px-1 lg:px-0">
 						<InputArea
-							{handleSendMessage}
+							handleSendMessage={handleSendMessageV2}
 							{isLoading}
 							{autoResizeTextarea}
 							class="mx-auto max-w-4xl"
+							{onStreamingToggle}
+							streamingEnabled={$streamingStore}
 						/>
 					</div>
 				</div>
@@ -374,43 +545,24 @@
 					<Artefact
 						{toggleArtifact}
 						fileType="txt"
-						fileName="documento.txt"
-						fileContent="Este es un archivo de texto plano.
-Línea 1: Contenido principal
-Línea 2: Información adicional  
-Línea 3: Más detalles
-Línea 4: Notas importantes
-Línea 5: Conclusión"
+						fileName="documentobase64.txt"
+						fileContent={TXT_BASE64}
 					/>
 				{:else if typeArtefact === 2}
 					<!-- Artefacto tipo IMAGEN -->
-					<Artefact
-						{toggleArtifact}
-						fileType="png"
-						fileName="imagen.png"
-						fileUrl="/images/logo.png"
-					/>
+					<Artefact {toggleArtifact} fileType="png" fileName="imagen.png" fileUrl={IMG_BASE64} />
 				{:else if typeArtefact === 3}
 					<!-- Artefacto tipo MARKDOWN -->
 					<Artefact {toggleArtifact} />
 				{:else if typeArtefact === 4}
 					<!-- Artefacto tipo PDF/DIAGRAMA -->
-					<Artefact
-						{toggleArtifact}
-						fileType="pdf"
-						fileName="diagrama.pdf"
-						fileUrl="https://educatic.unam.mx/eventos/seminnova/2024/s3-ponente-ux-design.pdf"
-					/>
+					<Artefact {toggleArtifact} fileType="pdf" fileName="pdf.pdf" fileUrl={PDF_BASE64} />
 				{:else if typeArtefact === 5}
 					<!-- Artefacto tipo PDF/DIAGRAMA -->
 					<Artefact {toggleArtifact} fileType="csv" fileName="archivo.csv" />
 				{:else}
-					<Artefact
-						{toggleArtifact}
-						fileType="html"
-						fileName="diagrama.html"
-						fileUrl="https://vizta.link"
-					/>
+					<Artefact {toggleArtifact} fileType="html" fileName="html.html" fileUrl={HTML_BASE64} />
+					<!-- Fallback - tipo por defecto -->
 				{/if}
 			{/if}
 		</div>
@@ -446,38 +598,3 @@ Línea 5: Conclusión"
 		{/if}
 	</div>
 </div>
-
-<style>
-	@keyframes fade-in {
-		from {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		to {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.animate-fade-in {
-		animation: fade-in 0.3s ease-out;
-	}
-
-	/* Smooth scrollbar */
-	::-webkit-scrollbar {
-		width: 6px;
-	}
-
-	::-webkit-scrollbar-track {
-		background: transparent;
-	}
-
-	::-webkit-scrollbar-thumb {
-		background: rgba(148, 163, 184, 0.3);
-		border-radius: 3px;
-	}
-
-	::-webkit-scrollbar-thumb:hover {
-		background: rgba(148, 163, 184, 0.5);
-	}
-</style>

@@ -263,6 +263,258 @@ const createSmartTrackerStore = () => {
 			});
 			unsubscribe();
 			return lastEvent;
+		},
+
+		// Nueva funciones para iniciar un evento de streaming
+		startStreamingEvent: (role: 'user' | 'model' = 'model') => {
+			update((currentData) => {
+				const newEvent: Event = {
+					content: {
+						parts: [{ text: '' }], // Empezamos con texto vacío
+						role
+					},
+					...createDefaultEventData(),
+					author: role === 'model' ? 'Orchestrator' : 'user',
+					isStreaming: true // Agregamos flag para identificar eventos en streaming
+				};
+
+				const updatedData = {
+					...currentData,
+					events: [...currentData.events, newEvent],
+					lastUpdateTime: Date.now()
+				};
+
+				saveToStorage(updatedData);
+				return updatedData;
+			});
+		},
+
+		// Actualizar el texto del evento que está en streaming
+		updateStreamingText: (text: string, isPartial: boolean = false) => {
+			update((currentData) => {
+				if (currentData.events.length === 0) return currentData;
+
+				const events = [...currentData.events];
+				const lastIndex = events.length - 1;
+				const lastEvent = events[lastIndex];
+
+				// Solo actualizar si es un evento en streaming
+				if (lastEvent.isStreaming) {
+					// Si es partial, reemplazamos el texto
+					// Si no es partial, es el texto final
+					const updatedEvent = {
+						...lastEvent,
+						content: {
+							...lastEvent.content,
+							parts: [{ text }]
+						},
+						isStreaming: isPartial // Si no es partial, terminamos el streaming
+					};
+
+					events[lastIndex] = updatedEvent;
+
+					const updatedData = {
+						...currentData,
+						events,
+						lastUpdateTime: Date.now()
+					};
+
+					saveToStorage(updatedData);
+					return updatedData;
+				}
+
+				return currentData;
+			});
+		},
+
+		// Acumular texto en el evento que está en streaming
+		appendStreamingText: (newText: string, isPartial: boolean = false) => {
+			update((currentData) => {
+				if (currentData.events.length === 0) return currentData;
+
+				const events = [...currentData.events];
+				const lastIndex = events.length - 1;
+				const lastEvent = events[lastIndex];
+
+				if (lastEvent.isStreaming && lastEvent.content.parts[0]) {
+					const currentText = lastEvent.content.parts[0].text || '';
+					const updatedText = currentText + newText;
+
+					const updatedEvent = {
+						...lastEvent,
+						content: {
+							...lastEvent.content,
+							parts: [{ text: updatedText }]
+						},
+						isStreaming: isPartial
+					};
+
+					events[lastIndex] = updatedEvent;
+
+					const updatedData = {
+						...currentData,
+						events,
+						lastUpdateTime: Date.now()
+					};
+
+					saveToStorage(updatedData);
+					return updatedData;
+				}
+
+				return currentData;
+			});
+		},
+
+		// Finalizar evento de streaming
+		finalizeStreamingEvent: (finalText?: string) => {
+			update((currentData) => {
+				if (currentData.events.length === 0) return currentData;
+
+				const events = [...currentData.events];
+				const lastIndex = events.length - 1;
+				const lastEvent = events[lastIndex];
+
+				if (lastEvent.isStreaming) {
+					const updatedEvent = {
+						...lastEvent,
+						content: {
+							...lastEvent.content,
+							parts: [
+								{
+									text: finalText || lastEvent.content.parts[0]?.text || ''
+								}
+							]
+						},
+						isStreaming: false
+					};
+
+					events[lastIndex] = updatedEvent;
+
+					const updatedData = {
+						...currentData,
+						events,
+						lastUpdateTime: Date.now()
+					};
+
+					saveToStorage(updatedData);
+					return updatedData;
+				}
+
+				return currentData;
+			});
+		},
+
+		// Agregar función call a evento actual (para streaming)
+		addFunctionCallToCurrentEvent: (functionCall: unknown) => {
+			update((currentData) => {
+				if (currentData.events.length === 0) return currentData;
+
+				const events = [...currentData.events];
+				const lastIndex = events.length - 1;
+				const lastEvent = events[lastIndex];
+
+				// Agregar function call al evento actual
+				const updatedParts = [...lastEvent.content.parts, { functionCall } as FunctionCallPart];
+
+				const updatedEvent = {
+					...lastEvent,
+					content: {
+						...lastEvent.content,
+						parts: updatedParts
+					}
+				};
+
+				events[lastIndex] = updatedEvent;
+
+				const updatedData = {
+					...currentData,
+					events,
+					lastUpdateTime: Date.now()
+				};
+
+				saveToStorage(updatedData);
+				return updatedData;
+			});
+		},
+
+		// Agregar función response a evento actual (para streaming)
+		addFunctionResponseToCurrentEvent: (functionResponse: unknown) => {
+			update((currentData) => {
+				if (currentData.events.length === 0) return currentData;
+
+				const events = [...currentData.events];
+				const lastIndex = events.length - 1;
+				const lastEvent = events[lastIndex];
+
+				// Agregar function response al evento actual
+				// const updatedParts = [...lastEvent.content.parts, { functionResponse }];
+				const updatedParts = [
+					...lastEvent.content.parts,
+					{ functionResponse } as FunctionResponsePart
+				];
+				const updatedEvent = {
+					...lastEvent,
+					content: {
+						...lastEvent.content,
+						parts: updatedParts
+					}
+				};
+
+				events[lastIndex] = updatedEvent;
+
+				const updatedData = {
+					...currentData,
+					events,
+					lastUpdateTime: Date.now()
+				};
+
+				saveToStorage(updatedData);
+				return updatedData;
+			});
+		},
+
+		// Verificar si hay un evento en streaming activo
+		hasActiveStreaming: (): boolean => {
+			let hasStreaming = false;
+			const unsubscribe = subscribe((data) => {
+				hasStreaming = data.events.some((event) => event.isStreaming);
+			});
+			unsubscribe();
+			return hasStreaming;
+		},
+
+		updateLastModelEventText: (text: string) => {
+			update((currentData) => {
+				if (currentData.events.length === 0) return currentData;
+
+				const events = [...currentData.events];
+				const lastIndex = events.length - 1;
+				const lastEvent = events[lastIndex];
+
+				// Solo actualizar si es un evento del modelo
+				if (lastEvent.content.role === 'model') {
+					const updatedEvent = {
+						...lastEvent,
+						content: {
+							...lastEvent.content,
+							parts: [{ text }]
+						}
+					};
+
+					events[lastIndex] = updatedEvent;
+
+					const updatedData = {
+						...currentData,
+						events,
+						lastUpdateTime: Date.now()
+					};
+
+					saveToStorage(updatedData);
+					return updatedData;
+				}
+
+				return currentData;
+			});
 		}
 	};
 };

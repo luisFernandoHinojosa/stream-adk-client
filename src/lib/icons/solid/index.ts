@@ -25,3 +25,4 @@ export { default as BotsiIcon } from './botsiIcon.svelte';
 export { default as MoonIcon } from './moonIcon.svelte';
 export { default as SunIcon } from './sunIcon.svelte';
 export { default as LogoutIcon } from './logoutIcon.svelte';
+export { default as ShieldIcon } from './shieldIcon.svelte';

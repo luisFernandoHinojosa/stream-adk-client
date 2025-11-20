@@ -1,25 +1,31 @@
 <script lang="ts">
-	import { page } from '$app/state';
 	import Artefact from '$lib/components/chatStream/artefact.svelte';
 	import ArtefactDropdown from '$lib/components/chatStream/artefactDropdown.svelte';
 	import Chat from '$lib/components/chatStream/chat.svelte';
 	import ChatSkeleton from '$lib/components/chatStream/chatSkeleton.svelte';
 	import InputArea from '$lib/components/chatStream/inputArea.svelte';
 	import ModalChatState from '$lib/components/chatStream/modalChatState.svelte';
-	import SidebarHistory from '$lib/components/chatStream/sidebarHistory.svelte';
 	import Loader from '$lib/components/ui/loader.svelte';
-	import { BrainIcon, LoaderIcon, PencilIcon } from '$lib/icons/outline';
+	import {
+		ArrowLeftIcon,
+		BrainIcon,
+		ChevronLeftIcon,
+		LoaderIcon,
+		PencilIcon
+	} from '$lib/icons/outline';
 	import Menu2Icon from '$lib/icons/outline/menu2Icon.svelte';
 	import PhotoIcon from '$lib/icons/outline/photoIcon.svelte';
 	import { BotsiIcon } from '$lib/icons/solid';
 	import FilePencilIcon from '$lib/icons/solid/filePencilIcon.svelte';
-	import type { ChatStreamSend, SessionsHistory } from '$lib/interface';
+	import type { ChatStreamSend, SessionData, SessionsHistory } from '$lib/interface';
 	import { smartTrackerService } from '$lib/services/smartTracker.service';
-	import { smartTrackerStore } from '$lib/stores/smartTrackerStore';
-	import { redirect } from '$lib/utils/redirect';
+	//import { smartTrackerStore } from '$lib/stores/smartTrackerStore';
 	import { onMount } from 'svelte';
 	import { fade } from 'svelte/transition';
-
+	import { redirect } from '$lib/utils/redirect';
+	import AppSelector2 from '$lib/components/chatStream/appSelector2.svelte';
+	import SidebarHistory from '$lib/components/user/sidebarHistory.svelte';
+	import { page } from '$app/state';
 	//VARIABLES STATES
 	let isLoading: boolean = $state(false);
 	let chatEndRef: HTMLDivElement;
@@ -29,61 +35,28 @@
 	let stateSessionMinimized: boolean = $state(false);
 	let isLoadingGetSession: boolean = $state(false);
 	let sendMessageData: ChatStreamSend;
+	let chatMessages: SessionData = $state({
+		id: '0',
+		appName: 'chat-app-botsi',
+		userId: 'default-user-botsi',
+		state: null,
+		events: [],
+		lastUpdateTime: Date.now()
+	});
+	let defaultSessionId: string = $state('b6ed5842-c106-4b71-b72c-b03a638cd073');
 
 	let isLoadingSessionChat: boolean = $state(false);
 	let typeArtefact: number = $state(2);
 	let dropdownOpen: boolean = $state(false);
 
-	let chatContainerRef: HTMLDivElement;
-
 	let chatViewContainer: HTMLDivElement | null = $state(null);
 	// Este es el área que contiene los mensajes y que hará scroll.
 	let chatMessagesAreaRef: HTMLDivElement | null = $state(null);
 
+	let userId: string | undefined = page.params.userId;
+	console.log('userId', userId);
+
 	//FUNCTIONS
-
-	const handleSendMessage = async (userMessage: string): Promise<void> => {
-		try {
-			smartTrackerStore.addUserEvent(userMessage);
-			isLoading = true;
-			setTimeout(() => {
-				scrollToUserMessage();
-			}, 50);
-			// setTimeout(() => scrollToBottom(true), 100);
-			//solo si el id es 0 creamos una sesion
-			if ($smartTrackerStore.id === '0') {
-				//alert('creando sesion');
-				console.log('creando sesion');
-				const newSession = await createNewSession();
-				//$smartTrackerStore.id = newSession.session_id;
-			}
-
-			sendMessageData = {
-				session_id: $smartTrackerStore.id,
-				message: userMessage
-				//timezone: 'America/La_Paz'
-			};
-
-			const sendMessageResponse = await smartTrackerService.chatStreamSend(sendMessageData);
-
-			//agregamos los functionCalls
-			smartTrackerStore.addFunctionCallEvent(sendMessageResponse.functionCalls);
-			//agregamos los functionResponses
-			smartTrackerStore.addFunctionResponseEvent(sendMessageResponse.functionResponses);
-
-			//agregamos los mensajes del modelo que devuelve el enpoint
-			sendMessageResponse.textMessages.forEach((message) => {
-				smartTrackerStore.addModelEvent(message);
-			});
-			setTimeout(() => scrollToBottom(true), 100);
-		} catch (error) {
-			isLoading = false;
-			smartTrackerStore.removeLastEvent();
-			console.log(error);
-		}
-		isLoading = false;
-		setTimeout(() => scrollToBottom(true), 100);
-	};
 
 	const toggleHistorySidebar = () => {
 		historyCollapsed = !historyCollapsed;
@@ -92,8 +65,9 @@
 	//Listar historial de sesiones
 	const getSessionsHistories = async () => {
 		try {
-			const sessionsHistoriesResponse = await smartTrackerService.getSessionsHistory();
-			console.log('sessionsHistoriesResponse', sessionsHistoriesResponse);
+			const sessionsHistoriesResponse = await smartTrackerService.getSessionsHistoryForUser(userId);
+			defaultSessionId = sessionsHistoriesResponse[sessionsHistoriesResponse.length - 1].id;
+			//console.log('sessionsHistoriesResponse', sessionsHistoriesResponse);
 			sessionsHistories = sessionsHistoriesResponse;
 		} catch (error) {
 			console.log(error);
@@ -105,10 +79,14 @@
 		try {
 			isLoadingSessionChat = true;
 			//console.log('sessionId', sessionId);
-			const sessionResponse = await smartTrackerService.getSession(sessionId);
-			smartTrackerStore.set(sessionResponse);
-			redirect(`/stream/${sessionResponse.id}`, true);
-			//console.log('sessionResponse', sessionResponse);
+			defaultSessionId = sessionId;
+			chatMessages.id = sessionId;
+			const sessionResponse = await smartTrackerService.getFullSessionForUser(
+				defaultSessionId,
+				userId
+			);
+			chatMessages = sessionResponse;
+			console.log('sessionResponse', sessionResponse);
 		} catch (error) {
 			isLoadingSessionChat = false;
 			console.log(error);
@@ -119,11 +97,10 @@
 	const createNewSession = async (): Promise<void> => {
 		try {
 			const sessionResponse = await smartTrackerService.createSession();
-			console.log('sessionResponse ...............', sessionResponse);
 			redirect(`/stream/${sessionResponse.session_id}`, true);
 			//console.log('sessionResponse', sessionResponse);
-			$smartTrackerStore.id = sessionResponse.session_id;
-			await getSessionsHistories();
+			chatMessages.id = sessionResponse.session_id;
+			//await getSessionsHistories();
 		} catch (error) {
 			console.log(error);
 		}
@@ -136,25 +113,18 @@
 	}
 
 	async function toggleStateSession() {
-		if ($smartTrackerStore.id !== '0') {
+		if (chatMessages.id !== '0') {
 			isLoadingGetSession = true;
-			await getSessionHistory($smartTrackerStore.id);
+			await getSessionHistory(chatMessages.id);
 			isLoadingGetSession = false;
 		}
 		stateSessionMinimized = !stateSessionMinimized;
 	}
-
 	function toggleArtifact() {
 		artifactOpen = !artifactOpen;
 	}
 
-	const startNewChat = () => {
-		smartTrackerStore.reset();
-		redirect(`/stream`, true);
-		shouldAutoScroll = true;
-	};
-
-	let shouldAutoScroll: boolean = $state(true);
+	//let shouldAutoScroll: boolean = $state(true);
 
 	// const scrollToBottom = (smooth: boolean = true) => {
 	// 	if (chatEndRef && shouldAutoScroll) {
@@ -173,29 +143,13 @@
 		}
 	}
 
-	function scrollToUserMessage() {
-		if (chatContainerRef) {
-			// Obtener la altura total del contenido
-			const scrollHeight = chatContainerRef.scrollHeight;
-			const clientHeight = chatContainerRef.clientHeight;
-
-			// Si hay scroll disponible, hacer scroll suave hacia el final
-			if (scrollHeight > clientHeight) {
-				chatContainerRef.scrollTo({
-					top: scrollHeight,
-					behavior: 'smooth'
-				});
-			}
-		}
-	}
-
 	const handleScroll = (event: Event) => {
 		const container = event.target as HTMLElement;
 		const { scrollTop, scrollHeight, clientHeight } = container;
 		const distanceFromBottom = scrollHeight - scrollTop - clientHeight;
 
 		// Si está a menos de 100px del final, activar auto-scroll
-		shouldAutoScroll = distanceFromBottom < 100;
+		//shouldAutoScroll = distanceFromBottom < 100;
 	};
 
 	function handleArtifactSelect(selectedType: any) {
@@ -212,34 +166,17 @@
 	}
 	//HOOKS
 
-	onMount(async () => {
-		if (window.visualViewport) {
-			const handleResize = () => {
-				if (chatViewContainer) {
-					// 1. Redimensionamos el contenedor principal del chat
-					chatViewContainer.style.height = `${window.visualViewport.height}px`;
-					// 2. Forzamos el scroll al final para que el último mensaje sea visible
-					scrollToBottom(false); // false para que sea instantáneo
-				}
-			};
-
-			handleResize(); // Ejecutar una vez al inicio
-			window.visualViewport.addEventListener('resize', handleResize);
-
-			// Svelte 5 se encarga de la limpieza del listener
-			return () => window.visualViewport.removeEventListener('resize', handleResize);
-		}
-		if ($smartTrackerStore.id !== '0') {
-			redirect(`/stream/${$smartTrackerStore.id}`);
-		}
-		if ($page.url.pathname !== '/stream') {
-			startNewChat();
-		}
-		await getSessionsHistories();
+	onMount(() => {
+		(async () => {
+			isLoadingSessionChat = true;
+			await getSessionsHistories();
+			await getSessionHistory(defaultSessionId);
+			isLoadingSessionChat = false;
+		})();
 	});
 
 	$effect(() => {
-		if ($smartTrackerStore.events.length > 0) {
+		if (chatMessages.events.length > 0) {
 			setTimeout(() => scrollToBottom(true), 100);
 		}
 	});
@@ -252,7 +189,7 @@
 	});
 </script>
 
-<div class="font-claude-message h-dvh w-full overflow-hidden bg-light-one dark:bg-dark-one">
+<div class="font-claude-message h-screen w-full overflow-hidden bg-light-one dark:bg-dark-one">
 	<div class="relative flex h-full w-full">
 		<!-- Overlay sidebar -->
 		{#if !historyCollapsed}
@@ -262,34 +199,32 @@
 				transition:fade={{ duration: 200 }}
 			></div>
 		{/if}
-
-		<!-- History Sidebar -->
 		<SidebarHistory
 			{historyCollapsed}
-			{startNewChat}
 			{sessionsHistories}
 			{toggleHistorySidebar}
-			currentChatId={$smartTrackerStore.id}
+			currentChatId={chatMessages.id}
 			{getSessionHistory}
+			{userId}
 		/>
 
 		<div class="relative flex h-full flex-1 overflow-hidden">
+			<div class="fixed mt-2 hidden lg:block">
+				<button
+					onclick={() => redirect('/settings/users')}
+					class="flex cursor-pointer items-center"
+				>
+					<ChevronLeftIcon /> back</button
+				>
+			</div>
 			<!-- Chat Section -->
-			<!-- <button onclick={() => redirect('/prueba')}>prueba2</button> -->
 			<div bind:this={chatViewContainer} class="relative h-full flex-1 overflow-hidden">
 				<div class="flex h-full w-full flex-col">
 					<!-- Header chat mobile -->
 					<div
-						class="flex w-full items-center justify-between bg-light-one_d px-4 py-3 lg:hidden dark:bg-dark-one_d"
+						class="flex w-full items-center justify-end bg-light-one_d px-4 py-3 lg:hidden dark:bg-dark-one_d"
 					>
-						<button
-							onclick={startNewChat}
-							class="flex items-center justify-center rounded-lg bg-light-two p-1 text-light-one transition-all duration-200 hover:bg-light-two_d dark:bg-dark-two dark:text-dark-one dark:hover:bg-dark-two_d"
-							aria-label="Nuevo chat"
-						>
-							<PencilIcon class="h-6 w-6" />
-						</button>
-						<div class="flex gap-3">
+						<div class="flex items-center justify-end gap-3">
 							<ArtefactDropdown
 								bind:isOpen={dropdownOpen}
 								bind:currentArtifactType={typeArtefact}
@@ -319,61 +254,27 @@
 
 					<div
 						bind:this={chatMessagesAreaRef}
-						class="flex-1 overflow-y-auto p-2 sm:p-3 md:p-6"
+						class="mt-6 flex-1 overflow-y-auto p-2 sm:p-3 md:p-6"
 						onscroll={handleScroll}
 					>
-						<!--*onScroll={handleScroll}*-->
 						<div class="mx-auto max-w-4xl space-y-6">
-							{#if $smartTrackerStore.events.length === 0}
+							{#if sessionsHistories.length === 0}
 								<div class="flex flex-col items-center py-12 text-center md:py-20">
 									<h3 class="mb-3 text-xl font-bold text-light-two md:text-2xl dark:text-dark-two">
-										¡Hola! ¿En qué puedo ayudarte?
+										No hay chats disponibles
 									</h3>
-									<p class="max-w-md text-base text-light-two md:text-lg dark:text-dark-two">
-										Escribe tu mensaje para comenzar una conversación
-									</p>
 								</div>
 							{/if}
 
-							{#if $smartTrackerStore.events.length > 0}
+							{#if chatMessages.events.length > 0}
 								{#if isLoadingSessionChat}
 									<ChatSkeleton messagesCount={4} showAccordion={true} animated={true} />
 								{:else}
-									<Chat sessionsData={$smartTrackerStore} />
+									<Chat sessionsData={chatMessages} />
 								{/if}
 							{/if}
-
-							{#if isLoading}
-								<div class="flex items-start justify-start gap-1 sm:gap-3">
-									<div class="flex flex-shrink-0 items-center justify-center">
-										<BotsiIcon class="h-8 w-8" />
-									</div>
-
-									<div class="relative min-w-0">
-										<div
-											class="relative rounded-xl rounded-tl-none bg-light-one_d p-3 md:p-4 dark:bg-dark-one_d"
-										>
-											<div
-												class="absolute top-0 -left-3 h-0 w-0 rounded-tl-md border-r-[15px] border-b-[15px] border-t-transparent border-r-light-one_d border-b-transparent dark:border-r-dark-one_d"
-											></div>
-											<Loader />
-										</div>
-									</div>
-								</div>
-							{/if}
-
 							<div bind:this={chatEndRef}></div>
 						</div>
-					</div>
-
-					<!-- Input Area -->
-					<div class="mx-auto w-full max-w-4xl px-1 pb-2 md:px-0">
-						<InputArea
-							{handleSendMessage}
-							{isLoading}
-							{autoResizeTextarea}
-							class="mx-auto max-w-4xl"
-						/>
 					</div>
 				</div>
 			</div>
@@ -412,9 +313,16 @@ Línea 5: Conclusión"
 						fileName="diagrama.pdf"
 						fileUrl="https://educatic.unam.mx/eventos/seminnova/2024/s3-ponente-ux-design.pdf"
 					/>
-				{:else}
-					<!-- Fallback - tipo por defecto -->
+				{:else if typeArtefact === 5}
+					<!-- Artefacto tipo PDF/DIAGRAMA -->
 					<Artefact {toggleArtifact} fileType="csv" fileName="archivo.csv" />
+				{:else}
+					<Artefact
+						{toggleArtifact}
+						fileType="html"
+						fileName="diagrama.html"
+						fileUrl="https://vizta.link"
+					/>
 				{/if}
 			{/if}
 		</div>
@@ -446,7 +354,7 @@ Línea 5: Conclusión"
 
 		<!-- Modal Fullscreen -->
 		{#if stateSessionMinimized}
-			<ModalChatState sessionsData={$smartTrackerStore} {toggleStateSession} />
+			<ModalChatState sessionsData={chatMessages} {toggleStateSession} />
 		{/if}
 	</div>
 </div>

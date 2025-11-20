@@ -53,7 +53,7 @@
 			'text-light-three dark:text-dark-three hover:text-light-three_d dark:hover:text-dark-three_d',
 		link: 'bg-transparent text-light-two dark:text-dark-two hover:text-light-two_d dark:hover:text-dark-two_d shadow-none px-0',
 		outline:
-			'bg-transparent text-light-two dark:text-dark-two hover:bg-light-two_d dark:hover:bg-dark-two_d focus:ring-light-two border border-light-two'
+			'bg-transparent text-light-two dark:text-dark-two focus:ring-light-two border border-light-two hover:border-light-two_d dark:hover:border-dark-two_d'
 	};
 
 	// Size classes

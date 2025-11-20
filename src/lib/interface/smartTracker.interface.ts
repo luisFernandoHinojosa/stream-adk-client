@@ -28,24 +28,51 @@ export interface TextPart {
 	text: string;
 }
 
+// export interface FunctionCallPart {
+// 	functionCall: {
+// 		id: string;
+// 		args: {
+// 			request: string;
+// 		};
+// 		name: string;
+// 	};
+// 	text?: string;
+// }
+
+// export interface FunctionResponsePart {
+// 	functionResponse: {
+// 		id: string;
+// 		name: string;
+// 		response: {
+// 			result: string; // JSON string
+// 		};
+// 	};
+// 	text?: string;
+// }
+
+// export interface Event {
+//   id: string;
+//   content: {
+//     parts: Array<{
+//       text?: string;
+//       functionCall?: any;
+//       functionResponse?: any;
+//     }>;
+//     role: 'user' | 'model';
+//   };
+//   author?: string;
+//   timestamp?: number;
+//   isStreaming?: boolean; // 🆕 Nueva propiedad para identificar eventos en streaming
+//   // ... otras propiedades existentes
+// }
+
+// Agregar estas nuevas interfaces si no existen:
 export interface FunctionCallPart {
-	functionCall: {
-		id: string;
-		args: {
-			request: string;
-		};
-		name: string;
-	};
+	functionCall: unknown;
 }
 
 export interface FunctionResponsePart {
-	functionResponse: {
-		id: string;
-		name: string;
-		response: {
-			result: string; // JSON string
-		};
-	};
+	functionResponse: unknown;
 }
 
 export interface ChatStreamResponse {
@@ -68,14 +95,28 @@ interface Actions {
 }
 
 export interface Event {
-	content: Content;
+	id: string;
+	content: {
+		parts: Array<{
+			text?: string;
+			functionCall?: unknown;
+			functionResponse?: unknown;
+		}>;
+		role: 'user' | 'model';
+	};
+	author?: string;
+	timestamp?: number;
+	isStreaming?: boolean;
+
+	//content: Content;
 	invocationId: string;
-	author: string;
+	//author: string;
 	actions: Actions;
 	longRunningToolIds: unknown[];
-	id: string;
-	timestamp: number;
+	//id: string;
+	//timestamp: number;
 	partial?: boolean;
+	//isStreaming?: boolean;
 }
 
 export interface SessionData {
@@ -85,4 +126,63 @@ export interface SessionData {
 	state: unknown; //cualquier estrutura
 	events: Event[];
 	lastUpdateTime: number;
+}
+
+//chat version 2 con streaming o no
+// interfaces.ts - Nuevas interfaces para Chat V2
+
+export interface ChatV2SendPayload {
+	message: string;
+	streaming: boolean;
+	state_delta?: {
+		[key: string]: unknown;
+	};
+}
+
+export interface ChatV2StreamEvent {
+	content: {
+		parts: Array<{
+			text?: string;
+			functionCall?: unknown;
+			functionResponse?: unknown;
+		}>;
+		role: 'model' | 'user';
+	};
+	partial?: boolean;
+	usageMetadata?: {
+		promptTokenCount?: number;
+		candidatesTokenCount?: number;
+		totalTokenCount?: number;
+		promptTokensDetails?: Array<{
+			modality: string;
+			tokenCount: number;
+		}>;
+		candidatesTokensDetails?: Array<{
+			modality: string;
+			tokenCount: number;
+		}>;
+	};
+	invocationId: string;
+	author: string;
+	actions?: {
+		stateDelta?: unknown;
+		artifactDelta?: unknown;
+		requestedAuthConfigs?: unknown;
+	};
+	id: string;
+	timestamp: number;
+}
+
+export interface ChatV2StreamCallbacks {
+	onTextChunk?: (text: string, isPartial: boolean, eventData: ChatV2StreamEvent) => void;
+	onFunctionCall?: (functionCall: unknown, eventData: ChatV2StreamEvent) => void;
+	onFunctionResponse?: (functionResponse: unknown, eventData: ChatV2StreamEvent) => void;
+	onComplete?: (finalEvent: ChatV2StreamEvent) => void;
+	onError?: (error: Error) => void;
+}
+
+export interface ChatV2Response {
+	success: boolean;
+	finalEvent?: ChatV2StreamEvent;
+	error?: string;
 }

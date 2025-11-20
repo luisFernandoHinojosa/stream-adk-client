@@ -1,398 +1,397 @@
-<script lang="ts">
-	import { onMount, tick } from 'svelte';
+<script>
+	import { onMount } from 'svelte';
 
-	// Interfaces TypeScript
-	interface Message {
-		id: string;
-		text: string;
-		sender: 'user' | 'bot';
-		timestamp: Date;
-	}
+	// Variables reactivas
+	let session = null;
+	let isLoading = false;
+	let isModelReady = false;
+	let selectedImage = null;
+	let imagePreview = null;
+	let response = '';
+	let error = '';
+	let downloadProgress = 0;
+	let isDownloading = false;
+	let diagnosticInfo = '';
 
-	// Datos random para el chat
-	const botResponses: string[] = [
-		'¡Hola! ¿En qué puedo ayudarte hoy?',
-		'Esa es una pregunta muy interesante. Déjame pensarlo detenidamente y darte una respuesta completa que realmente te ayude a entender el tema en profundidad...',
-		'Me parece que tienes razón en ese punto. Sin embargo, hay varios aspectos adicionales que deberíamos considerar para tener una visión más completa del tema.',
-		'¿Has considerado esta otra perspectiva? A menudo, cuando analizamos un problema desde diferentes ángulos, podemos encontrar soluciones más creativas e innovadoras.',
-		'Excelente pregunta. La respuesta no es tan simple como podría parecer inicialmente. Hay múltiples factores que intervienen en esta situación, y cada uno de ellos puede influir significativamente en el resultado final.',
-		'Creo que podríamos explorar eso más a fondo. Este tipo de temas requieren un análisis detallado para poder ofrecer insights realmente valiosos y actionables.',
-		'¡Qué buena observación! Es exactamente este tipo de pensamiento crítico lo que necesitamos para avanzar en la comprensión de temas complejos como este.',
-		'Permíteme compartir mi punto de vista sobre eso. Basándome en la información disponible y considerando las diferentes variables involucradas, creo que la mejor aproximación sería...',
-		'Eso me recuerda a algo que leí recientemente en un estudio muy interesante. Los investigadores encontraron patrones similares en situaciones comparables, lo cual nos da una perspectiva adicional para analizar tu caso específico.',
-		'¡Perfecto! Sigamos con esa línea de pensamiento. Creo que estás en el camino correcto, y con algunos ajustes adicionales podremos llegar a una solución realmente efectiva.'
-	];
-
-	const userMessages: string[] = [
-		'Hola, ¿cómo estás?',
-		'¿Puedes ayudarme con algo?',
-		'¿Qué piensas sobre la tecnología actual y cómo está transformando la manera en que trabajamos?',
-		'Estoy trabajando en un proyecto interesante',
-		'¿Tienes algún consejo para programadores que están empezando?',
-		'Me gusta mucho este chat',
-		'¿Cuál es tu opinión sobre el diseño UX y cómo podemos mejorar la experiencia del usuario?',
-		'Gracias por la ayuda',
-		'¿Podrías explicarme algo sobre inteligencia artificial?',
-		'Esto es muy útil para mi trabajo diario'
-	];
-
-	// Estado reactivo
-	let messages: Message[] = [];
-	let inputValue: string = '';
-	let isTyping: boolean = false;
-	let messagesContainer: HTMLDivElement;
-
-	// Función para scroll automático inteligente
-	const scrollToBottom = async (behavior: 'smooth' | 'auto' = 'smooth') => {
-		await tick();
-		if (messagesContainer) {
-			messagesContainer.scrollTo({
-				top: messagesContainer.scrollHeight,
-				behavior: behavior
-			});
-		}
-	};
-
-	// Función para scroll a un mensaje específico (solo mostrar el inicio)
-	const scrollToMessage = async (messageElement: HTMLElement) => {
-		await tick();
-		if (messagesContainer && messageElement) {
-			const containerTop = messagesContainer.scrollTop;
-			const containerHeight = messagesContainer.clientHeight;
-			const messageTop = messageElement.offsetTop;
-			const messageHeight = messageElement.clientHeight;
-
-			// Si el mensaje es más alto que el container, mostrar solo el inicio
-			if (messageHeight > containerHeight) {
-				messagesContainer.scrollTo({
-					top: messageTop,
-					behavior: 'smooth'
-				});
-			} else {
-				// Si el mensaje cabe, hacer scroll normal al final
-				scrollToBottom('smooth');
-			}
-		}
-	};
-
-	// Función para crear un nuevo mensaje
-	const createMessage = (text: string, sender: 'user' | 'bot'): Message => ({
-		id: `${Date.now()}-${Math.random().toString(36).substr(2, 9)}`,
-		text,
-		sender,
-		timestamp: new Date()
+	// Verificar disponibilidad y crear sesión al montar el componente
+	onMount(async () => {
+		await checkAvailabilityAndCreateSession();
 	});
 
-	// Función para formatear timestamp
-	const formatTime = (date: Date): string =>
-		date.toLocaleTimeString('es-ES', {
-			hour: '2-digit',
-			minute: '2-digit'
-		});
+	// Función para verificar disponibilidad y crear sesión
+	async function checkAvailabilityAndCreateSession() {
+		try {
+			error = '';
+			diagnosticInfo = '';
 
-	// Función para agregar mensaje con scroll inteligente
-	const addMessage = async (message: Message) => {
-		messages = [...messages, message];
+			// Diagnóstico detallado
+			const diagnostics = [];
 
-		await tick();
-
-		// Si es mensaje del usuario, scroll automático al tope del mensaje
-		if (message.sender === 'user') {
-			// Scroll inmediato para mostrar el mensaje del usuario
-			await scrollToBottom('auto');
-		} else {
-			// Si es del bot, permitir que el usuario vea desde el inicio si es largo
-			const lastMessageElement = messagesContainer?.lastElementChild as HTMLElement;
-			if (lastMessageElement) {
-				await scrollToMessage(lastMessageElement);
-			}
-		}
-	};
-
-	// Función para simular respuesta del bot
-	const botReply = async () => {
-		isTyping = true;
-		await scrollToBottom('smooth');
-
-		// Simular tiempo de respuesta random (1-3 segundos)
-		const delay = Math.random() * 2000 + 1000;
-
-		setTimeout(async () => {
-			isTyping = false;
-			const randomResponse = botResponses[Math.floor(Math.random() * botResponses.length)];
-			const botMessage = createMessage(randomResponse, 'bot');
-			await addMessage(botMessage);
-		}, delay);
-	};
-
-	// Función para enviar mensaje
-	const sendMessage = async () => {
-		const text = inputValue.trim();
-		if (!text) return;
-
-		// Agregar mensaje del usuario
-		const userMessage = createMessage(text, 'user');
-		await addMessage(userMessage);
-
-		// Limpiar input
-		inputValue = '';
-
-		// Simular respuesta del bot
-		await botReply();
-	};
-
-	// Función para agregar mensaje random del usuario
-	const addRandomUserMessage = async () => {
-		const randomMessage = userMessages[Math.floor(Math.random() * userMessages.length)];
-		const userMessage = createMessage(randomMessage, 'user');
-		await addMessage(userMessage);
-		await botReply();
-	};
-
-	// Manejar tecla Enter
-	const handleKeyPress = (event: KeyboardEvent) => {
-		if (event.key === 'Enter' && !event.shiftKey) {
-			event.preventDefault();
-			sendMessage();
-		}
-	};
-
-	// Configurar mensaje de bienvenida
-	onMount(async () => {
-		setTimeout(async () => {
-			const welcomeMessage = createMessage(
-				'¡Hola! Bienvenido al chat. ¿En qué puedo ayudarte hoy?',
-				'bot'
+			// Verificar APIs disponibles
+			diagnostics.push(`LanguageModel disponible: ${!!window.LanguageModel}`);
+			diagnostics.push(`AI disponible: ${!!window.ai}`);
+			diagnostics.push(
+				`User Agent: ${navigator.userAgent.includes('Chrome') ? 'Chrome detectado' : 'Chrome no detectado'}`
 			);
-			await addMessage(welcomeMessage);
-		}, 500);
+
+			if (!window.LanguageModel && !window.ai?.languageModel) {
+				diagnosticInfo = diagnostics.join('\n');
+				throw new Error(`La API de Prompt no está disponible.`);
+			}
+
+			// Intentar forzar la descarga primero
+			let availability;
+
+			try {
+				// Llamar a availability SIN parámetros primero
+				availability = await LanguageModel.availability();
+				diagnostics.push(`Disponibilidad básica: ${availability}`);
+
+				// Si no está disponible, intentar crear sesión para forzar descarga
+				if (availability === 'unavailable') {
+					diagnostics.push('Intentando forzar descarga del modelo...');
+
+					// Intentar crear sesión básica para triggear descarga
+					try {
+						const testSession = await LanguageModel.create();
+						diagnostics.push('Sesión de prueba creada exitosamente');
+						await testSession.destroy();
+
+						// Volver a verificar disponibilidad
+						availability = await LanguageModel.availability();
+						diagnostics.push(`Disponibilidad después de crear sesión: ${availability}`);
+					} catch (createError) {
+						diagnostics.push(`Error al crear sesión de prueba: ${createError.message}`);
+					}
+				}
+			} catch (e) {
+				diagnostics.push(`Error al verificar disponibilidad: ${e.message}`);
+				throw e;
+			}
+
+			diagnosticInfo = diagnostics.join('\n');
+			console.log('Diagnósticos:', diagnosticInfo);
+
+			if (availability === 'unavailable') {
+				throw new Error(`El modelo sigue sin estar disponible después de intentar forzar la descarga.
+
+DIAGNÓSTICO COMPLETO:
+${diagnosticInfo}
+
+SOLUCIONES INMEDIATAS:
+1. Ve a chrome://components/ → Busca "Optimization Guide On Device Model" → "Check for update"
+2. Si no aparece ese componente, espera 30-60 minutos después de habilitar los flags
+3. Verifica que tengas suficiente espacio en disco (2GB+)
+4. Verifica RAM disponible (4GB+ libres)
+
+COMANDOS PARA PROBAR EN CONSOLA:
+LanguageModel.availability().then(console.log);
+LanguageModel.create().then(s => console.log('Sesión creada:', s));`);
+			}
+
+			// Si el modelo necesita descarga
+			if (availability === 'downloadable') {
+				isDownloading = true;
+				diagnostics.push('Modelo necesita descarga - iniciando...');
+				console.log('Descargando modelo...');
+			}
+
+			// Crear sesión (empezar sin imágenes)
+			session = await LanguageModel.create({
+				monitor(monitor) {
+					monitor.addEventListener('downloadprogress', (event) => {
+						downloadProgress = Math.round(event.loaded * 100);
+						console.log(`Descargado: ${downloadProgress}%`);
+					});
+				}
+			});
+
+			isDownloading = false;
+			isModelReady = true;
+			diagnostics.push('Sesión creada exitosamente');
+			diagnosticInfo = diagnostics.join('\n');
+			console.log('Sesión creada exitosamente');
+		} catch (err) {
+			error = err.message;
+			isDownloading = false;
+			console.error('Error al crear sesión:', err);
+		}
+	}
+
+	// Función para manejar la selección de imagen
+	function handleImageSelect(event) {
+		const file = event.target.files[0];
+		if (file && file.type.startsWith('image/')) {
+			selectedImage = file;
+
+			// Crear preview de la imagen
+			const reader = new FileReader();
+			reader.onload = (e) => {
+				imagePreview = e.target.result;
+			};
+			reader.readAsDataURL(file);
+
+			// Limpiar respuesta anterior
+			response = '';
+			error = '';
+		} else {
+			error = 'Por favor selecciona un archivo de imagen válido.';
+		}
+	}
+
+	// Función para probar solo texto
+	async function testTextOnly() {
+		if (!session) {
+			error = 'Sesión no está lista.';
+			return;
+		}
+
+		try {
+			isLoading = true;
+			error = '';
+			response = '';
+
+			console.log('Probando funcionalidad de texto...');
+
+			const result = await session.prompt('Escríbeme un poema corto sobre la tecnología.');
+			response = `PRUEBA DE TEXTO EXITOSA:\n\n${result}`;
+			console.log('Prueba de texto completada:', result);
+		} catch (err) {
+			error = `Error en prueba de texto: ${err.message}`;
+			console.error('Error:', err);
+		} finally {
+			isLoading = false;
+		}
+	}
+
+	// Función para analizar la imagen
+	async function analyzeImage() {
+		if (!session || !selectedImage) {
+			error = 'No hay imagen seleccionada o sesión no está lista.';
+			return;
+		}
+
+		try {
+			isLoading = true;
+			error = '';
+			response = '';
+
+			console.log('Analizando imagen...');
+
+			// Intentar con contenido multimodal si es posible
+			try {
+				const result = await session.prompt([
+					{
+						role: 'user',
+						content: [
+							{
+								type: 'text',
+								value:
+									'Describe detalladamente lo que ves en esta imagen. Menciona objetos, colores, personas, acciones y cualquier detalle relevante.'
+							},
+							{
+								type: 'image',
+								value: selectedImage
+							}
+						]
+					}
+				]);
+				response = result;
+			} catch (multimodalError) {
+				console.warn('Error multimodal, intentando solo texto:', multimodalError);
+				// Fallback: solo texto
+				const result = await session.prompt(
+					'Describe una imagen genérica para probar la funcionalidad de texto del modelo.'
+				);
+				response = `MODO TEXTO (imagen no procesada): ${result}`;
+			}
+
+			console.log('Análisis completado:', response);
+		} catch (err) {
+			error = `Error al analizar imagen: ${err.message}`;
+			console.error('Error:', err);
+		} finally {
+			isLoading = false;
+		}
+	}
+
+	// Función para limpiar la selección
+	function clearSelection() {
+		selectedImage = null;
+		imagePreview = null;
+		response = '';
+		error = '';
+	}
+
+	// Limpiar recursos al desmontar
+	onMount(() => {
+		return () => {
+			if (session) {
+				session.destroy();
+			}
+		};
 	});
 </script>
 
-<!-- Container principal con altura fija del viewport -->
-<div
-	class="fixed inset-0 mx-auto flex w-full max-w-4xl flex-col bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 md:relative md:h-screen"
->
-	<!-- Header fijo -->
-	<header class="shrink-0 border-b border-white/20 bg-white/10 p-4 backdrop-blur-md">
-		<div class="flex items-center justify-between">
-			<div class="flex items-center space-x-3">
-				<div
-					class="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-500"
-				>
-					<span class="text-lg font-bold text-white">💬</span>
-				</div>
-				<div>
-					<h1 class="text-lg font-semibold text-white">Chat Moderno</h1>
-					<p class="text-sm text-gray-300">Bot inteligente disponible</p>
-				</div>
-			</div>
-			<button
-				on:click={addRandomUserMessage}
-				class="transform rounded-lg bg-gradient-to-r from-purple-500 to-pink-500 px-3 py-2 text-xs font-medium text-white shadow-lg transition-all duration-200 hover:scale-105 hover:from-purple-600 hover:to-pink-600 hover:shadow-xl sm:text-sm"
-			>
-				Random
-			</button>
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 px-4 py-8">
+	<div class="mx-auto max-w-4xl">
+		<!-- Header -->
+		<div class="mb-8 text-center">
+			<h1 class="mb-2 text-3xl font-bold text-gray-800">Analizador de Imágenes con Gemini Nano</h1>
+			<p class="text-gray-600">
+				Carga una imagen y obtén una descripción detallada usando IA local
+			</p>
 		</div>
-	</header>
 
-	<!-- Messages Container - Área scrolleable -->
-	<div class="flex-1 overflow-hidden">
-		<div
-			bind:this={messagesContainer}
-			class="h-full overflow-y-auto overscroll-contain scroll-smooth px-4 py-2"
-		>
-			<!-- Mensajes -->
-			{#each messages as message, index (message.id)}
-				<div
-					class="message-item animate-fade-in mb-6 flex {message.sender === 'user'
-						? 'justify-end'
-						: 'justify-start'}"
-					style="animation: fadeIn 0.3s ease-in-out;"
-				>
-					<div
-						class="flex max-w-[85%] items-start space-x-3 sm:max-w-md lg:max-w-lg {message.sender ===
-						'user'
-							? 'flex-row-reverse space-x-reverse'
-							: ''}"
-					>
-						<!-- Avatar -->
-						<div class="mt-1 flex-shrink-0">
-							<div
-								class="flex h-8 w-8 items-center justify-center rounded-full text-sm font-semibold {message.sender ===
-								'user'
-									? 'bg-gradient-to-r from-blue-500 to-purple-500 text-white'
-									: 'bg-gradient-to-r from-emerald-500 to-teal-500 text-white'}"
-							>
-								{message.sender === 'user' ? 'U' : 'B'}
-							</div>
-						</div>
+		<!-- Estado del modelo -->
+		<div class="mb-6 rounded-lg bg-white p-6 shadow-md">
+			<h2 class="mb-3 text-lg font-semibold text-gray-800">Estado del Modelo</h2>
 
-						<!-- Mensaje -->
-						<div class="flex flex-col space-y-2">
-							<div
-								class="rounded-2xl px-4 py-3 break-words shadow-lg backdrop-blur-sm {message.sender ===
-								'user'
-									? 'rounded-br-md bg-gradient-to-r from-blue-500 to-purple-500 text-white'
-									: 'rounded-bl-md border border-white/20 bg-white/10 text-white'}"
-							>
-								<p class="text-sm leading-relaxed whitespace-pre-wrap">{message.text}</p>
-							</div>
-							<span
-								class="px-2 text-xs text-gray-400 {message.sender === 'user'
-									? 'text-right'
-									: 'text-left'}"
-							>
-								{formatTime(message.timestamp)}
-							</span>
-						</div>
-					</div>
-				</div>
-			{/each}
-
-			<!-- Indicador de typing -->
-			{#if isTyping}
-				<div
-					class="message-item animate-fade-in mb-6 flex justify-start"
-					style="animation: fadeIn 0.3s ease-in-out;"
-				>
-					<div class="flex items-start space-x-3">
-						<div class="mt-1 flex-shrink-0">
-							<div
-								class="flex h-8 w-8 items-center justify-center rounded-full bg-gradient-to-r from-emerald-500 to-teal-500 text-sm font-semibold text-white"
-							>
-								B
-							</div>
-						</div>
-						<div
-							class="rounded-2xl rounded-bl-md border border-white/20 bg-white/10 px-4 py-3 backdrop-blur-sm"
-						>
-							<div class="flex space-x-1">
-								<div class="h-2 w-2 animate-pulse rounded-full bg-gray-400"></div>
-								<div
-									class="h-2 w-2 animate-pulse rounded-full bg-gray-400"
-									style="animation-delay: 0.3s"
-								></div>
-								<div
-									class="h-2 w-2 animate-pulse rounded-full bg-gray-400"
-									style="animation-delay: 0.6s"
-								></div>
-							</div>
-						</div>
-					</div>
+			{#if diagnosticInfo}
+				<div class="mb-4 rounded-lg border border-blue-200 bg-blue-50 p-3">
+					<p class="mb-2 text-sm font-medium text-blue-800">Información de diagnóstico:</p>
+					<pre class="text-xs whitespace-pre-wrap text-blue-700">{diagnosticInfo}</pre>
 				</div>
 			{/if}
 
-			<!-- Espacio extra para evitar que el último mensaje quede oculto -->
-			<div class="h-4"></div>
+			{#if isDownloading}
+				<div class="flex items-center space-x-3">
+					<div class="h-6 w-6 animate-spin rounded-full border-b-2 border-blue-600"></div>
+					<span class="text-blue-600">Descargando modelo: {downloadProgress}%</span>
+				</div>
+				<div class="mt-2 h-2 rounded-full bg-gray-200">
+					<div
+						class="h-2 rounded-full bg-blue-600 transition-all duration-300"
+						style="width: {downloadProgress}%"
+					></div>
+				</div>
+			{:else if isModelReady}
+				<div class="flex items-center space-x-2">
+					<div class="h-3 w-3 rounded-full bg-green-500"></div>
+					<span class="font-medium text-green-700">Modelo listo para usar</span>
+				</div>
+			{:else if error}
+				<div class="flex items-center space-x-2">
+					<div class="h-3 w-3 rounded-full bg-red-500"></div>
+					<span class="font-medium text-red-700">Error en la inicialización</span>
+				</div>
+			{:else}
+				<div class="flex items-center space-x-3">
+					<div class="h-5 w-5 animate-spin rounded-full border-b-2 border-blue-600"></div>
+					<span class="text-blue-600">Inicializando modelo...</span>
+				</div>
+			{/if}
 		</div>
-	</div>
 
-	<!-- Input Container fijo en la parte inferior -->
-	<div class="shrink-0 border-t border-white/20 bg-white/10 p-3 backdrop-blur-md sm:p-4">
-		<div class="flex space-x-2 sm:space-x-3">
-			<input
-				bind:value={inputValue}
-				on:keypress={handleKeyPress}
-				type="text"
-				placeholder="Escribe tu mensaje..."
-				class="flex-1 resize-none rounded-xl border border-white/20 bg-white/10 px-3 py-2 text-base text-white placeholder-gray-400 backdrop-blur-sm transition-all duration-200 focus:border-transparent focus:ring-2 focus:ring-purple-500 focus:outline-none sm:px-4 sm:py-3"
-				maxlength="1000"
-			/>
-			<button
-				on:click={sendMessage}
-				disabled={!inputValue.trim()}
-				class="shrink-0 transform rounded-xl bg-gradient-to-r from-blue-500 to-purple-500 px-4 py-2 font-medium text-white shadow-lg transition-all duration-200 hover:scale-105 hover:from-blue-600 hover:to-purple-600 hover:shadow-xl disabled:transform-none disabled:cursor-not-allowed disabled:opacity-50 sm:px-6 sm:py-3"
-			>
-				<svg class="h-4 w-4 sm:h-5 sm:w-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-					<path
-						stroke-linecap="round"
-						stroke-linejoin="round"
-						stroke-width="2"
-						d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8"
-					></path>
-				</svg>
-			</button>
+		<!-- Selector de imagen -->
+		<div class="mb-6 rounded-lg bg-white p-6 shadow-md">
+			<h2 class="mb-4 text-lg font-semibold text-gray-800">Seleccionar Imagen</h2>
+
+			<div class="space-y-4">
+				<div class="flex items-center space-x-4">
+					<label
+						class="relative cursor-pointer rounded-md bg-blue-600 px-4 py-2 font-medium text-white transition-colors hover:bg-blue-700"
+					>
+						<span>Seleccionar Imagen</span>
+						<input
+							type="file"
+							class="absolute inset-0 h-full w-full cursor-pointer opacity-0"
+							accept="image/*"
+							on:change={handleImageSelect}
+							disabled={!isModelReady}
+						/>
+					</label>
+
+					{#if selectedImage}
+						<button
+							on:click={clearSelection}
+							class="rounded-md bg-gray-500 px-4 py-2 font-medium text-white transition-colors hover:bg-gray-600"
+						>
+							Limpiar
+						</button>
+					{/if}
+				</div>
+
+				<!-- Preview de imagen -->
+				{#if imagePreview}
+					<div class="rounded-lg border-2 border-dashed border-gray-300 p-4">
+						<img
+							src={imagePreview}
+							alt="Preview"
+							class="mx-auto h-auto max-h-64 max-w-full rounded-lg shadow-sm"
+						/>
+						<p class="mt-2 text-center text-sm text-gray-600">
+							{selectedImage.name} ({Math.round(selectedImage.size / 1024)} KB)
+						</p>
+					</div>
+				{/if}
+			</div>
 		</div>
+
+		<!-- Botón de análisis -->
+		{#if isModelReady}
+			<div class="mb-6 space-y-3 text-center">
+				<!-- Botón para probar solo texto -->
+				<button
+					on:click={() => testTextOnly()}
+					disabled={isLoading}
+					class="mx-auto flex items-center space-x-2 rounded-lg bg-purple-600 px-6 py-3 font-medium text-white transition-colors hover:bg-purple-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+				>
+					{#if isLoading}
+						<div class="h-5 w-5 animate-spin rounded-full border-b-2 border-white"></div>
+						<span>Probando...</span>
+					{:else}
+						<span>Probar Solo Texto (Sin Imagen)</span>
+					{/if}
+				</button>
+
+				<!-- Botón para analizar imagen -->
+				{#if selectedImage}
+					<button
+						on:click={analyzeImage}
+						disabled={isLoading}
+						class="mx-auto flex items-center space-x-2 rounded-lg bg-green-600 px-6 py-3 font-medium text-white transition-colors hover:bg-green-700 disabled:cursor-not-allowed disabled:bg-gray-400"
+					>
+						{#if isLoading}
+							<div class="h-5 w-5 animate-spin rounded-full border-b-2 border-white"></div>
+							<span>Analizando...</span>
+						{:else}
+							<span>Analizar Imagen</span>
+						{/if}
+					</button>
+				{/if}
+			</div>
+		{/if}
+
+		<!-- Errores -->
+		{#if error}
+			<div class="mb-6 rounded-lg border border-red-200 bg-red-50 p-4">
+				<div class="flex items-start space-x-2">
+					<div class="mt-1 text-red-600">
+						<svg class="h-5 w-5" fill="currentColor" viewBox="0 0 20 20">
+							<path
+								fill-rule="evenodd"
+								d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z"
+								clip-rule="evenodd"
+							/>
+						</svg>
+					</div>
+					<div class="flex-1">
+						<p class="font-medium text-red-800">Error:</p>
+						<pre class="mt-1 text-sm whitespace-pre-wrap text-red-700">{error}</pre>
+					</div>
+				</div>
+			</div>
+		{/if}
+
+		<!-- Respuesta -->
+		{#if response}
+			<div class="rounded-lg bg-white p-6 shadow-md">
+				<h2 class="mb-4 text-lg font-semibold text-gray-800">Análisis de la Imagen</h2>
+				<div class="rounded-lg border bg-gray-50 p-4">
+					<p class="leading-relaxed whitespace-pre-wrap text-gray-800">{response}</p>
+				</div>
+			</div>
+		{/if}
 	</div>
 </div>
-
-<style>
-	@keyframes fadeIn {
-		0% {
-			opacity: 0;
-			transform: translateY(10px);
-		}
-		100% {
-			opacity: 1;
-			transform: translateY(0);
-		}
-	}
-
-	.animate-fade-in {
-		animation: fadeIn 0.3s ease-in-out;
-	}
-
-	/* Estilos para el scroll personalizado */
-	:global(.scroll-smooth::-webkit-scrollbar) {
-		width: 4px;
-	}
-
-	:global(.scroll-smooth::-webkit-scrollbar-track) {
-		background: rgba(255, 255, 255, 0.05);
-		border-radius: 2px;
-	}
-
-	:global(.scroll-smooth::-webkit-scrollbar-thumb) {
-		background: rgba(255, 255, 255, 0.2);
-		border-radius: 2px;
-	}
-
-	:global(.scroll-smooth::-webkit-scrollbar-thumb:hover) {
-		background: rgba(255, 255, 255, 0.4);
-	}
-
-	/* Animación de pulse personalizada para typing indicator */
-	@keyframes customPulse {
-		0%,
-		60% {
-			opacity: 0.4;
-		}
-		30% {
-			opacity: 1;
-		}
-	}
-
-	:global(.animate-pulse) {
-		animation: customPulse 1.5s infinite;
-	}
-
-	/* Fuerza el contenedor a mantenerse en pantalla completa */
-	:global(html, body) {
-		margin: 0;
-		padding: 0;
-		height: 100%;
-		overflow: hidden;
-		position: fixed;
-		width: 100%;
-	}
-
-	/* En desktop, permitir scroll normal */
-	@media (min-width: 768px) {
-		:global(html, body) {
-			position: static;
-			overflow: auto;
-		}
-	}
-
-	/* Prevenir zoom en inputs en iOS */
-	input[type='text'] {
-		font-size: 16px;
-	}
-
-	/* Mejorar el comportamiento del scroll en móviles */
-	.overscroll-contain {
-		overscroll-behavior: contain;
-		-webkit-overflow-scrolling: touch;
-	}
-</style>

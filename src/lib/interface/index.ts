@@ -8,3 +8,5 @@ export * from './bot.interface';
 export * from './knowledge.interface';
 export * from './smartTracker.interface';
 export * from './echarts.interface';
+export * from './i18n.interface';
+export * from './aplication.interface';

@@ -9,3 +9,7 @@
 		redirect('/auth/sign-in');
 	}}>Click me</button
 >
+
+<div>
+	<iframe src="https://vizta.link/" frameborder="0" class="h-[500px] w-[500px]" title=""></iframe>
+</div>

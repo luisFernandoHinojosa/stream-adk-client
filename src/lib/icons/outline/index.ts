@@ -49,3 +49,4 @@ export { default as LoaderIcon } from './loaderIcon.svelte';
 export { default as ChevronDownIcon } from './chevronDownIcon.svelte';
 export { default as CharBarIcon } from './charBarIcon.svelte';
 export { default as KeyIcon } from './keyIcon.svelte';
+export { default as CopyIcon } from './copyIcon.svelte';

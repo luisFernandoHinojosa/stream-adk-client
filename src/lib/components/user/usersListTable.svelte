@@ -1,5 +1,7 @@
 <script lang="ts">
 	import { ROLES, type User } from '$lib/interface';
+	import { redirect } from '$lib/utils/redirect';
+	import { Button } from '../ui';
 	import RoleSelector from './roleSelector.svelte';
 
 	export let users: User[];
@@ -93,23 +95,6 @@
 						<td class="px-6 py-4 whitespace-nowrap">
 							<div class="text-sm text-light-two dark:text-dark-two">{user.user_email}</div>
 						</td>
-
-						<td class="px-6 py-4 whitespace-nowrap">
-							<span
-								class="inline-flex items-center rounded-full px-2.5 py-0.5 text-xs font-medium text-light-two dark:text-dark-two"
-							>
-								{ROLES[user.role_id] || 'Sin rol'}
-							</span>
-						</td>
-
-						<!-- User ID -->
-						<td class="px-6 py-4 whitespace-nowrap">
-							<div class="font-mono text-xs text-light-two dark:text-dark-two" title={user.user_id}>
-								{truncateId(user.user_id)}
-							</div>
-						</td>
-
-						<!-- Actions -->
 						<td class="px-6 py-4 whitespace-nowrap">
 							<div class="w-40">
 								<RoleSelector
@@ -119,6 +104,20 @@
 									handleRoleUpdate={(role) => handleRoleUpdate(user.user_id, role)}
 								/>
 							</div>
+						</td>
+						<td class="px-6 py-4 whitespace-nowrap">
+							<div class="font-mono text-xs text-light-two dark:text-dark-two" title={user.user_id}>
+								{truncateId(user.user_id)}
+							</div>
+						</td>
+
+						<td class="px-6 py-4">
+							<Button
+								variant="outline"
+								onclick={() => redirect(`/settings/users/${user.user_id}/chat-details`)}
+							>
+								Ver chats
+							</Button>
 						</td>
 					</tr>
 				{/each}
