@@ -1,8 +1,8 @@
 <script lang="ts">
 	//auth/sign-in/page.svelte
-	import { Button, Input, Subheading } from '$lib/components';
-	import { auth } from '$lib/config/firebase.config';
+	import { Input, Subheading } from '$lib/components';
 	import { APP_NAME, SRC_LOGO_APP } from '$lib/constants';
+	import { AppError, errorService } from '$lib/services/error.service';
 	import XIcon from '$lib/icons/outline/xIcon.svelte';
 	import { userService } from '$lib/services';
 	import { authService } from '$lib/services/authService';
@@ -12,22 +12,27 @@
 
 	let username: string = $state('');
 	let password: string = $state('');
-	let isAuthenticated: boolean = $state(false);
 	let isLoading: boolean = $state(false);
 	let error: string = $state('');
-	let userToken: string = $state('');
 
 	const submitLogin = async (): Promise<void> => {
 		try {
 			isLoading = true;
+			error = '';
 			const tokenResponse = await authService.login(username, password);
 			authService.saveToken(tokenResponse);
 			const user = await userService.getCurrentUser();
 			userStore.setUser(user);
 			console.log('Login exitoso:', tokenResponse);
 			redirect('/stream');
-		} catch (error) {
-			console.error('Error en login:', error.message);
+		} catch (err) {
+			if (err instanceof AppError) {
+				error = err.message; // Mensaje específico de la API, ej: "Credenciales inválidas"
+				errorService.logError(err); // Loguea el error de forma estructurada
+			} else {
+				error = 'Ocurrió un error inesperado. Por favor, intenta de nuevo.';
+				console.error('Error no controlado:', err);
+			}
 		} finally {
 			isLoading = false;
 		}

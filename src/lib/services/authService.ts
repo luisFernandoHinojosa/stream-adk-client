@@ -1,8 +1,8 @@
 import { API_CONFIG } from '$lib/config/api.config';
 import type { AuthResponse } from '$lib/interface/auth.interface';
 import { authStore } from '$lib/stores';
+import { AppError, errorService } from './error.service';
 
-// auth.service.ts
 export interface TokenRequest {
 	grant_type: string;
 	username: string;
@@ -57,18 +57,16 @@ class AuthService {
 			const data = await response.json();
 
 			if (!response.ok) {
-				const error: ApiError = data;
-				throw new Error(
-					`Error ${response.status}: ${error.error} - ${error.error_description || 'Authentication failed'}`
-				);
+				const errorType = errorService.mapHttpToErrorType(response.status);
+				const message = data.detail || 'Error de autenticación';
+				throw new AppError(message, errorType, response.status, data);
 			}
 			console.log('data login', data);
 			return data as AuthResponse;
 		} catch (error) {
-			if (error instanceof Error) {
-				throw error;
-			}
-			throw new Error('Error de red o conexión');
+			// Simplemente relanzamos el error, ya sea un AppError de nuestra lógica
+			// o un error de red del fetch.
+			throw error;
 		}
 	}
 
